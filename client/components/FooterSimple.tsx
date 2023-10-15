@@ -1,3 +1,4 @@
+// https://ui.mantine.dev/category/footers/#footer-simple
 import { Container, Group, Anchor } from "@mantine/core";
 import classes from "../styles/FooterSimple.module.css";
 

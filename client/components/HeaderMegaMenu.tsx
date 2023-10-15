@@ -1,3 +1,4 @@
+// Reference: https://ui.mantine.dev/category/headers/#header-mega-menu
 import {
   Group,
   Divider,
