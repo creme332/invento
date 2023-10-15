@@ -1,8 +1,9 @@
 import { useDisclosure } from "@mantine/hooks";
 import { LoadingOverlay, Button, Group, Box } from "@mantine/core";
+import { TableSort } from "../components/TableSort";
 
 export default function Items() {
-  const [visible, { toggle }] = useDisclosure(true);
+  const [visible, { toggle }] = useDisclosure(false);
 
   // Note that position: relative is required
   return (
@@ -13,11 +14,7 @@ export default function Items() {
           zIndex={1000}
           overlayProps={{ radius: "sm", blur: 2 }}
         />
-        <Group>Content here</Group>
-        <Group>Content here</Group>
-        <Group>Content here</Group>
-        <Group>Content here</Group>
-        <Group>Content here</Group>
+        <TableSort />
       </Box>
 
       <Group>

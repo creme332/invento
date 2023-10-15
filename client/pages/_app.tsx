@@ -1,11 +1,13 @@
 import "@mantine/core/styles.css";
 import Head from "next/head";
-import { MantineProvider } from "@mantine/core";
+import { MantineProvider, Container } from "@mantine/core";
 import { theme } from "../theme";
 import Header from "../components/HeaderMegaMenu";
 import Footer from "../components/FooterSimple";
+import { useState } from "react";
 
 export default function App({ Component, pageProps }: any) {
+  const [fetchingData, setFetchingData] = useState(true);
   return (
     <MantineProvider defaultColorScheme="dark" theme={theme}>
       <Head>
@@ -20,7 +22,9 @@ export default function App({ Component, pageProps }: any) {
         />
       </Head>
       <Header />
-      <Component {...pageProps} />
+      <Container>
+        <Component fetchingData={fetchingData} {...pageProps} />
+      </Container>
       <Footer />
     </MantineProvider>
   );
