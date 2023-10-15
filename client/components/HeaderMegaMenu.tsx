@@ -12,12 +12,12 @@ import classes from "../styles/HeaderMegaMenu.module.css";
 
 export default function HeaderMegaMenu() {
   const links = [
-    { text: "Home", href: "#" },
-    { text: "Items", href: "#" },
-    { text: "Categories", href: "#" },
+    { text: "Home", href: "/" },
+    { text: "Items", href: "/items" },
+    { text: "Categories", href: "/categories" },
   ];
   const linkComponents = links.map((e) => (
-    <a href={e.href} className={classes.link}>
+    <a href={e.href} key={`tab-link-${e.text}`} className={classes.link}>
       {e.text}
     </a>
   ));
@@ -39,6 +39,8 @@ export default function HeaderMegaMenu() {
           />
         </Group>
       </header>
+
+      {/** Define drawer for mobile */}
       <Drawer
         opened={drawerOpened}
         onClose={closeDrawer}
