@@ -25,7 +25,7 @@ export default function HeaderMegaMenu() {
     useDisclosure(false);
 
   return (
-    <Box pb={120}>
+    <Box pb={50}>
       <header className={classes.header}>
         <Group className={classes.group}>
           <Group h="100%" gap={0} visibleFrom="sm">
