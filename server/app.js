@@ -1,17 +1,37 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+require('dotenv').config()
+const express = require("express");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const logger = require("morgan");
+const mongoose = require("mongoose");
 
-var indexRouter = require('./routes/index');
+const indexRouter = require("./routes/index");
 
-var app = express();
+const app = express();
 
-app.use(logger('dev'));
+// Set up mongoose connection
+const mongoose = require("mongoose");
+mongoose.set("strictQuery", false);
+
+main().catch((err) => console.log(err));
+async function main() {
+  await mongoose.connect(process.env.MONGO_STRING);
+}
+
+app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/', indexRouter);
+app.use(
+  multer({
+    dest: "./uploads/",
+    rename: function (fieldname, filename) {
+      return filename;
+    },
+  })
+);
+
+app.use("/", indexRouter);
 
 module.exports = app;
