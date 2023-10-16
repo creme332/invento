@@ -4,17 +4,17 @@ const Schema = mongoose.Schema;
 
 const ItemSchema = new Schema({
   name: { type: String, required: true, maxLength: 100, minLength: 3 },
-  description: { type: String, maxLength: 100 },
+  description: { type: String, required: true, maxLength: 100 },
   status: {
     type: String,
     required: true,
     enum: ["Available", "Maintenance", "Loaned", "Reserved"],
-    default: "Maintenance",
+    default: "Available",
   },
-  stock: { type: Number, default: 0, min: 0 },
+  stock: { type: Number, required: true, default: 0, min: 0 },
   image: { type: Object, default: {} },
-  price: { type: Number, default: 0, min: 0 },
-  category: { type: Schema.Types.ObjectId, ref: "Category" }, // reference to the associated category
+  price: { type: Number, required: true, default: 0, min: 0 },
+  category: { type: Schema.Types.ObjectId, required: true, ref: "Category" }, // reference to the associated category
 });
 
 // an item can have multiple categories
