@@ -5,10 +5,20 @@ const Category = require("../models/category");
 // Display list of all Categories.
 exports.category_list = asyncHandler(async (req, res, next) => {
   const allCategories = await Category.find().sort({ name: 1 }).exec();
-  res.json({
-    title: "Category List",
-    category_list: allCategories,
-  });
+  res.json(allCategories);
+});
+
+// Display one Category
+exports.category_detail = asyncHandler(async (req, res, next) => {
+  // Get details of category and all their books (in parallel)
+  const category = Category.findById(req.params.id).exec();
+
+  if (category === null) {
+    // No results.
+    res.redirect("/categories");
+  }
+
+  res.json(category);
 });
 
 // Handle Category create on POST.
@@ -54,37 +64,12 @@ exports.category_create_post = [
   }),
 ];
 
-// Display Category delete form on GET.
-exports.category_delete_get = asyncHandler(async (req, res, next) => {
-  // Get details of category and all their books (in parallel)
-  const category = Category.findById(req.params.id).exec();
-
-  if (category === null) {
-    // No results.
-    res.redirect("/categories");
-  }
-
-  res.json({ category: category });
-});
-
 // Handle Category delete on POST.
+// TODO: Add validation
 exports.category_delete_post = asyncHandler(async (req, res, next) => {
   const category = Category.findById(req.params.id).exec();
   await Category.findByIdAndRemove(req.body.categoryid);
   res.redirect("/categories");
-});
-
-// Display Category update form on GET.
-exports.category_update_get = asyncHandler(async (req, res, next) => {
-  // Get details of category and all their books (in parallel)
-  const category = Category.findById(req.params.id).exec();
-
-  if (category === null) {
-    // No results.
-    res.redirect("/categories");
-  }
-
-  res.json({ category: category });
 });
 
 // Handle Category update on POST.
