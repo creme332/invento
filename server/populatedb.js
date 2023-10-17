@@ -191,12 +191,120 @@ async function createItems() {
       categories[7]
     ),
     itemCreate(
+      7,
+      "Screwdriver",
+      "A sturdy screwdriver for household repairs",
+      "Available",
+      25,
+      19.99,
+      categories[7]
+    ),
+    itemCreate(
+      7,
+      "Gorilla Glue",
+      "A sticky glue for household repairs",
+      "Available",
+      25,
+      29.99,
+      categories[7]
+    ),
+    itemCreate(
       8,
       "Yoga Mat",
       "A high-quality yoga mat for exercise",
       "Available",
       30,
       29.99,
+      categories[8]
+    ),
+    itemCreate(
+      8,
+      "5kg Dumbell",
+      "A high-quality dumbell for exercise",
+      "Available",
+      130,
+      129.99,
+      categories[8]
+    ),
+    itemCreate(
+      0,
+      "Headphones",
+      "High-quality over-ear headphones with noise-cancellation feature",
+      "Available",
+      15,
+      199.99,
+      categories[0]
+    ),
+    itemCreate(
+      1,
+      "Dress Shirt",
+      "A formal dress shirt made of premium cotton fabric",
+      "Available",
+      30,
+      49.99,
+      categories[1]
+    ),
+    itemCreate(
+      2,
+      "Apples",
+      "Fresh, organic apples from local farms",
+      "Available",
+      200,
+      1.99,
+      categories[2]
+    ),
+    itemCreate(
+      3,
+      "The Catcher in the Rye",
+      "A popular novel by J.D. Salinger",
+      "Available",
+      20,
+      9.99,
+      categories[3]
+    ),
+    itemCreate(
+      4,
+      "Wall Clock",
+      "A vintage-style wall clock with a silent mechanism",
+      "Available",
+      8,
+      39.99,
+      categories[4]
+    ),
+    itemCreate(
+      5,
+      "Remote Control Car",
+      "A battery-powered remote control car for kids",
+      "Available",
+      25,
+      34.99,
+      categories[5]
+    ),
+    itemCreate(
+      6,
+      "Dining Table",
+      "A sturdy wooden dining table with six chairs",
+      "Available",
+      3,
+      799.99,
+      categories[6]
+    ),
+    itemCreate(
+      7,
+      "Screwdriver Set",
+      "A set of screwdrivers with various tip sizes for household use",
+      "Available",
+      40,
+      19.99,
+      categories[7]
+    ),
+    itemCreate(
+      8,
+      "Yoga Ball",
+      "A durable yoga ball for core strengthening exercises",
+      "Available",
+      20,
+      19.99,
       categories[8]
     ),
   ]);
