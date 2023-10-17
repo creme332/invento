@@ -203,7 +203,7 @@ async function createItems() {
       7,
       "Gorilla Glue",
       "A sticky glue for household repairs",
-      "Available",
+      "Reserved",
       25,
       29.99,
       categories[7]
@@ -221,7 +221,7 @@ async function createItems() {
       8,
       "5kg Dumbell",
       "A high-quality dumbell for exercise",
-      "Available",
+      "Reserved",
       130,
       129.99,
       categories[8]
@@ -230,7 +230,7 @@ async function createItems() {
       0,
       "Headphones",
       "High-quality over-ear headphones with noise-cancellation feature",
-      "Available",
+      "Loaned",
       15,
       199.99,
       categories[0]
@@ -266,7 +266,7 @@ async function createItems() {
       4,
       "Wall Clock",
       "A vintage-style wall clock with a silent mechanism",
-      "Available",
+      "Loaned",
       8,
       39.99,
       categories[4]
@@ -284,7 +284,7 @@ async function createItems() {
       6,
       "Dining Table",
       "A sturdy wooden dining table with six chairs",
-      "Available",
+      "Maintenance",
       3,
       799.99,
       categories[6]
@@ -293,8 +293,8 @@ async function createItems() {
       7,
       "Screwdriver Set",
       "A set of screwdrivers with various tip sizes for household use",
-      "Available",
-      40,
+      "Maintenance",
+      0,
       19.99,
       categories[7]
     ),
@@ -302,7 +302,7 @@ async function createItems() {
       8,
       "Yoga Ball",
       "A durable yoga ball for core strengthening exercises",
-      "Available",
+      "Maintenance",
       20,
       19.99,
       categories[8]
