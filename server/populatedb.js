@@ -2,14 +2,11 @@
 
 /**
  * This script populates some items and categories to your database.
+ * ! A .env file must be present in server folder and it must contain your mongo connection string
  *
- *  Specified database as argument - e.g.: node populatedb "mongodb+srv://cooluser:coolpassword@cluster0.lz91hw2.mongodb.net/invento?retryWrites=true&w=majority"
- *
- * Reference: MDN
  */
 
-// Get arguments passed on command line
-const userArgs = process.argv.slice(2);
+require("dotenv").config();
 
 const Item = require("./models/item");
 const Category = require("./models/category");
@@ -20,16 +17,15 @@ const categories = [];
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 
-const mongoDB = userArgs[0];
-
 main().catch((err) => console.log(err));
 
 async function main() {
   console.log("Debug: About to connect");
-  await mongoose.connect(mongoDB);
+  await mongoose.connect(process.env.MONGO_STRING);
   console.log("Debug: Should be connected?");
-  await createItems();
+  // ! Categories must be created first before item depend on category
   await createCategories();
+  await createItems();
   console.log("Debug: Closing mongoose");
   mongoose.connection.close();
 }
@@ -71,15 +67,51 @@ async function itemCreate(
 async function createCategories() {
   console.log("Adding categories");
   await Promise.all([
-    categoryCreate(0, "Electronics"),
-    categoryCreate(1, "Clothing"),
-    categoryCreate(2, "Groceries"),
-    categoryCreate(3, "Books"),
-    categoryCreate(4, "Home Decor"),
-    categoryCreate(5, "Toys"),
-    categoryCreate(6, "Furniture"),
-    categoryCreate(7, "Tools"),
-    categoryCreate(8, "Sports Equipment"),
+    categoryCreate(
+      0,
+      "Electronics",
+      "Devices and gadgets that operate through electronic systems"
+    ),
+    categoryCreate(
+      1,
+      "Clothing",
+      "Various types of apparel for men, women, and children"
+    ),
+    categoryCreate(
+      2,
+      "Groceries",
+      "Food and household items for daily consumption"
+    ),
+    categoryCreate(
+      3,
+      "Books",
+      "Printed and digital reading materials, including novels, textbooks, and more"
+    ),
+    categoryCreate(
+      4,
+      "Home Decor",
+      "Items used to decorate and enhance the aesthetic appeal of homes"
+    ),
+    categoryCreate(
+      5,
+      "Toys",
+      "Playthings for children that promote entertainment and learning"
+    ),
+    categoryCreate(
+      6,
+      "Furniture",
+      "Various types of movable objects intended to support various human activities"
+    ),
+    categoryCreate(
+      7,
+      "Tools",
+      "Instruments used to carry out particular functions or tasks"
+    ),
+    categoryCreate(
+      8,
+      "Sports Equipment",
+      "Gear and accessories used in various sports and recreational activities"
+    ),
   ]);
 }
 
