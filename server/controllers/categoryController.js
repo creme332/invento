@@ -10,8 +10,7 @@ exports.category_list = asyncHandler(async (req, res, next) => {
 
 // Display one Category
 exports.category_detail = asyncHandler(async (req, res, next) => {
-  // Get details of category and all their books (in parallel)
-  const category = Category.findById(req.params.id).exec();
+  const category = await Category.findById(req.params.id).exec();
 
   if (category === null) {
     // No results.

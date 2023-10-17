@@ -2,7 +2,7 @@ const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
 const Item = require("../models/item");
 
-// Display list of all Categories.
+// Display list of all Items.
 exports.item_list = asyncHandler(async (req, res, next) => {
   const allItems = await Item.find().sort({ name: 1 }).exec();
   res.json(allItems);
@@ -10,14 +10,8 @@ exports.item_list = asyncHandler(async (req, res, next) => {
 
 // Display one Item
 exports.item_detail = asyncHandler(async (req, res, next) => {
-  // Get details of item and all their books (in parallel)
-  const item = Item.findById(req.params.id).exec();
-
-  if (item === null) {
-    // No results.
-    res.redirect("/items");
-  }
-
+  console.log(req.params.id);
+  const item = await Item.findById(req.params.id).exec();
   res.json(item);
 });
 
