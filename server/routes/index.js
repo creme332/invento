@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 
 // Require controller modules.
-const item_controller = require("../controllers/bookController");
-const category_controller = require("../controllers/authorController");
+const item_controller = require("../controllers/itemController");
+const category_controller = require("../controllers/categoryController");
 
 router.get("/categories", category_controller.category_list);
 router.get("/category/:id", category_controller.category_detail);
