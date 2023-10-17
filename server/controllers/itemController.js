@@ -2,6 +2,55 @@ const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
 const Item = require("../models/item");
 
+// Display statistics of Items.
+exports.item_by_category = asyncHandler(async (req, res, next) => {
+  // get number of items for each category
+  const groupItemsByCategory = await Item.aggregate([
+    {
+      $lookup: {
+        from: "categories",
+        localField: "category",
+        foreignField: "_id",
+        as: "category",
+      },
+    },
+    {
+      $group: {
+        _id: "$category.name",
+        totalItems: { $count: {} },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        category: { $first: "$_id" },
+        totalItems: 1,
+      },
+    },
+  ]);
+  res.json(groupItemsByCategory);
+});
+
+exports.item_by_status = asyncHandler(async (req, res, next) => {
+  // get number of items for each status
+  const groupItemsByStatus = await Item.aggregate([
+    {
+      $group: {
+        _id: "$status",
+        totalItems: { $count: {} },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        status: "$_id",
+        totalItems: 1,
+      },
+    },
+  ]);
+  res.json(groupItemsByStatus);
+});
+
 // Display list of all Items.
 exports.item_list = asyncHandler(async (req, res, next) => {
   const allItems = await Item.find().sort({ name: 1 }).exec();
