@@ -1,5 +1,5 @@
 import { useDisclosure } from "@mantine/hooks";
-import { LoadingOverlay, Button, Group, Box } from "@mantine/core";
+import { LoadingOverlay, Button, Group, Box, Title } from "@mantine/core";
 import { TableSort } from "../components/TableSort";
 
 export default function Items() {
@@ -14,7 +14,10 @@ export default function Items() {
           zIndex={1000}
           overlayProps={{ radius: "sm", blur: 2 }}
         />
-        <TableSort />
+        <Title mb={20}>All items</Title>
+
+        <TableSort enableSearchBar={true} />
+        <Button>Create item</Button>
       </Box>
 
       <Group>
