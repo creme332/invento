@@ -166,7 +166,7 @@ const data = [
   },
 ];
 
-export function TableSort() {
+export function TableSort({ enableSearchBar = false }) {
   const [search, setSearch] = useState("");
   const [sortedData, setSortedData] = useState(data);
   const [sortBy, setSortBy] = useState<keyof RowData | null>(null);
@@ -197,18 +197,21 @@ export function TableSort() {
 
   return (
     <ScrollArea>
-      <TextInput
-        placeholder="Search by any field"
-        mb="xl"
-        leftSection={
-          <IconSearch
-            style={{ width: rem(16), height: rem(16) }}
-            stroke={1.5}
-          />
-        }
-        value={search}
-        onChange={handleSearchChange}
-      />
+      {enableSearchBar ? (
+        <TextInput
+          placeholder="Search by any field"
+          mb="xl"
+          leftSection={
+            <IconSearch
+              style={{ width: rem(16), height: rem(16) }}
+              stroke={1.5}
+            />
+          }
+          value={search}
+          onChange={handleSearchChange}
+        />
+      ) : null}
+
       <Table
         horizontalSpacing="md"
         verticalSpacing="xs"
