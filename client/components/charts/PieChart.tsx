@@ -11,7 +11,7 @@ interface pieChartProps {
 }
 
 export default function PieChart({
-  labelsArray = ["Availabl", "Maintenance", "Reserved"],
+  labelsArray = ["Available", "Maintenance", "Reserved"],
   dataArray = [10, 21, 23],
   titleName = "Number of items per status",
 }: pieChartProps) {
