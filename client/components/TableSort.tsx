@@ -20,12 +20,7 @@ import {
   IconSearch,
 } from "@tabler/icons-react";
 import classes from "../styles/TableSort.module.css";
-
-interface RowData {
-  _id: string;
-  name: string;
-  description: string;
-}
+import { Category, NullableCategory } from "../common/types";
 
 interface ThProps {
   children?: React.ReactNode;
@@ -35,8 +30,10 @@ interface ThProps {
 }
 
 interface tableProps {
-  data: RowData[];
+  data: Category[];
   enableSearchBar?: Boolean;
+  editHandler(arg0: NullableCategory): void;
+  deleteHandler: (category: Category) => Promise<void>;
 }
 
 function Th({ children, reversed, sorted, onSort }: ThProps) {
@@ -61,7 +58,7 @@ function Th({ children, reversed, sorted, onSort }: ThProps) {
   );
 }
 
-function filterData(data: RowData[], search: string) {
+function filterData(data: Category[], search: string) {
   const query = search.toLowerCase().trim();
   return data.filter((item) =>
     keys(data[0]).some((key) => item[key].toLowerCase().includes(query))
@@ -69,8 +66,8 @@ function filterData(data: RowData[], search: string) {
 }
 
 function sortData(
-  data: RowData[],
-  payload: { sortBy: keyof RowData | null; reversed: boolean; search: string }
+  data: Category[],
+  payload: { sortBy: keyof Category | null; reversed: boolean; search: string }
 ) {
   const { sortBy } = payload;
 
@@ -92,14 +89,16 @@ function sortData(
 
 export default function CategoryTableSort({
   data,
+  editHandler,
+  deleteHandler,
   enableSearchBar = false,
 }: tableProps) {
   const [search, setSearch] = useState("");
   const [sortedData, setSortedData] = useState(data);
-  const [sortBy, setSortBy] = useState<keyof RowData | null>(null);
+  const [sortBy, setSortBy] = useState<keyof Category | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
 
-  const setSorting = (field: keyof RowData) => {
+  const setSorting = (field: keyof Category) => {
     const reversed = field === sortBy ? !reverseSortDirection : false;
     setReverseSortDirection(reversed);
     setSortBy(field);
@@ -126,8 +125,12 @@ export default function CategoryTableSort({
       <Table.Td>{row.description}</Table.Td>
       <Table.Td>
         <Flex justify={"space-between"}>
-          <Button color="grey">Edit</Button>
-          <Button color="red">Delete</Button>
+          <Button onClick={() => editHandler} color="grey">
+            Edit
+          </Button>
+          <Button onClick={() => deleteHandler(row)} color="red">
+            Delete
+          </Button>
         </Flex>
       </Table.Td>
     </Table.Tr>
@@ -136,7 +139,7 @@ export default function CategoryTableSort({
     <Table.Tr key={"fdsfdsfds"}>
       <Table.Td colSpan={4}>
         <Button fullWidth variant="light">
-          + New category
+          {"+ New category"}
         </Button>
       </Table.Td>
     </Table.Tr>
@@ -188,18 +191,17 @@ export default function CategoryTableSort({
             >
               Description
             </Th>
-            <Th onSort={() => {}}>Actions</Th>{" "}
+            <Th onSort={() => {}}>Actions</Th>
           </Table.Tr>
         </Table.Tbody>
         <Table.Tbody>
-          {" "}
           {rows.length > 0 ? (
             rows
           ) : (
             <Table.Tr>
               <Table.Td colSpan={4}>
                 <Text fw={500} ta="center">
-                  Nothing found
+                  {"Nothing found"}
                 </Text>
               </Table.Td>
             </Table.Tr>
