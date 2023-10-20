@@ -1,5 +1,5 @@
 // Reference: https://ui.mantine.dev/category/tables/#table-sort
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Table,
   ScrollArea,
@@ -7,8 +7,10 @@ import {
   Group,
   Text,
   Center,
+  Button,
   TextInput,
   rem,
+  Flex,
   keys,
 } from "@mantine/core";
 import {
@@ -20,16 +22,21 @@ import {
 import classes from "../styles/TableSort.module.css";
 
 interface RowData {
+  _id: string;
   name: string;
-  email: string;
-  company: string;
+  description: string;
 }
 
 interface ThProps {
-  children: React.ReactNode;
-  reversed: boolean;
-  sorted: boolean;
+  children?: React.ReactNode;
+  reversed?: boolean;
+  sorted?: boolean;
   onSort(): void;
+}
+
+interface tableProps {
+  data: RowData[];
+  enableSearchBar?: Boolean;
 }
 
 function Th({ children, reversed, sorted, onSort }: ThProps) {
@@ -83,90 +90,10 @@ function sortData(
   );
 }
 
-const data = [
-  {
-    name: "Athena Weissnat",
-    company: "Little - Rippin",
-    email: "Elouise.Prohaska@yahoo.com",
-  },
-  {
-    name: "Deangelo Runolfsson",
-    company: "Greenfelder - Krajcik",
-    email: "Kadin_Trantow87@yahoo.com",
-  },
-  {
-    name: "Danny Carter",
-    company: "Kohler and Sons",
-    email: "Marina3@hotmail.com",
-  },
-  {
-    name: "Trace Tremblay PhD",
-    company: "Crona, Aufderhar and Senger",
-    email: "Antonina.Pouros@yahoo.com",
-  },
-  {
-    name: "Derek Dibbert",
-    company: "Gottlieb LLC",
-    email: "Abagail29@hotmail.com",
-  },
-  {
-    name: "Viola Bernhard",
-    company: "Funk, Rohan and Kreiger",
-    email: "Jamie23@hotmail.com",
-  },
-  {
-    name: "Austin Jacobi",
-    company: "Botsford - Corwin",
-    email: "Genesis42@yahoo.com",
-  },
-  {
-    name: "Hershel Mosciski",
-    company: "Okuneva, Farrell and Kilback",
-    email: "Idella.Stehr28@yahoo.com",
-  },
-  {
-    name: "Mylene Ebert",
-    company: "Kirlin and Sons",
-    email: "Hildegard17@hotmail.com",
-  },
-  {
-    name: "Lou Trantow",
-    company: "Parisian - Lemke",
-    email: "Hillard.Barrows1@hotmail.com",
-  },
-  {
-    name: "Dariana Weimann",
-    company: "Schowalter - Donnelly",
-    email: "Colleen80@gmail.com",
-  },
-  {
-    name: "Dr. Christy Herman",
-    company: "VonRueden - Labadie",
-    email: "Lilyan98@gmail.com",
-  },
-  {
-    name: "Katelin Schuster",
-    company: "Jacobson - Smitham",
-    email: "Erich_Brekke76@gmail.com",
-  },
-  {
-    name: "Melyna Macejkovic",
-    company: "Schuster LLC",
-    email: "Kylee4@yahoo.com",
-  },
-  {
-    name: "Pinkie Rice",
-    company: "Wolf, Trantow and Zulauf",
-    email: "Fiona.Kutch@hotmail.com",
-  },
-  {
-    name: "Brain Kreiger",
-    company: "Lueilwitz Group",
-    email: "Rico98@hotmail.com",
-  },
-];
-
-export function TableSort({ enableSearchBar = false }) {
+export default function CategoryTableSort({
+  data,
+  enableSearchBar = false,
+}: tableProps) {
   const [search, setSearch] = useState("");
   const [sortedData, setSortedData] = useState(data);
   const [sortBy, setSortBy] = useState<keyof RowData | null>(null);
@@ -187,13 +114,33 @@ export function TableSort({ enableSearchBar = false }) {
     );
   };
 
+  useEffect(() => {
+    setSortedData(data);
+    console.log(data);
+  }, []);
+
   const rows = sortedData.map((row) => (
-    <Table.Tr key={row.name}>
+    <Table.Tr key={row._id}>
+      <Table.Td>{row._id}</Table.Td>
       <Table.Td>{row.name}</Table.Td>
-      <Table.Td>{row.email}</Table.Td>
-      <Table.Td>{row.company}</Table.Td>
+      <Table.Td>{row.description}</Table.Td>
+      <Table.Td>
+        <Flex justify={"space-between"}>
+          <Button color="grey">Edit</Button>
+          <Button color="red">Delete</Button>
+        </Flex>
+      </Table.Td>
     </Table.Tr>
   ));
+  rows.push(
+    <Table.Tr key={"fdsfdsfds"}>
+      <Table.Td colSpan={4}>
+        <Button fullWidth variant="light">
+          + New category
+        </Button>
+      </Table.Td>
+    </Table.Tr>
+  );
 
   return (
     <ScrollArea>
@@ -221,6 +168,13 @@ export function TableSort({ enableSearchBar = false }) {
         <Table.Tbody>
           <Table.Tr>
             <Th
+              sorted={sortBy === "_id"}
+              reversed={reverseSortDirection}
+              onSort={() => setSorting("_id")}
+            >
+              ID
+            </Th>
+            <Th
               sorted={sortBy === "name"}
               reversed={reverseSortDirection}
               onSort={() => setSorting("name")}
@@ -228,27 +182,22 @@ export function TableSort({ enableSearchBar = false }) {
               Name
             </Th>
             <Th
-              sorted={sortBy === "email"}
+              sorted={sortBy === "description"}
               reversed={reverseSortDirection}
-              onSort={() => setSorting("email")}
+              onSort={() => setSorting("description")}
             >
-              Email
+              Description
             </Th>
-            <Th
-              sorted={sortBy === "company"}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting("company")}
-            >
-              Company
-            </Th>
+            <Th onSort={() => {}}>Actions</Th>{" "}
           </Table.Tr>
         </Table.Tbody>
         <Table.Tbody>
+          {" "}
           {rows.length > 0 ? (
             rows
           ) : (
             <Table.Tr>
-              <Table.Td colSpan={Object.keys(data[0]).length}>
+              <Table.Td colSpan={4}>
                 <Text fw={500} ta="center">
                   Nothing found
                 </Text>
