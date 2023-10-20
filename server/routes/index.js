@@ -8,8 +8,8 @@ const category_controller = require("../controllers/categoryController");
 router.get("/categories", category_controller.category_list);
 router.get("/category/:id", category_controller.category_detail);
 router.post("/category/create", category_controller.category_create_post);
-router.post("/categories/:id/update", category_controller.category_update_post);
-router.post("/categories/:id/delete", category_controller.category_delete_post);
+router.post("/category/:id/update", category_controller.category_update_post);
+router.post("/category/:id/delete", category_controller.category_delete_post);
 
 router.get("/items", item_controller.item_list);
 router.get("/items/grouped-by-status", item_controller.item_by_status);
