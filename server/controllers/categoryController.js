@@ -54,12 +54,11 @@ exports.category_create_post = [
       res.json({
         errors: errors.array(),
       });
-      return;
     } else {
       // Data from form is valid.
 
       // Save category.
-      //TODO await category.save();
+      await category.save();
 
       // Send a valid response
       res.json(category.url);
@@ -70,9 +69,12 @@ exports.category_create_post = [
 // Handle Category delete on POST.
 // TODO: Add validation
 exports.category_delete_post = asyncHandler(async (req, res, next) => {
-  const category = Category.findById(req.params.id).exec();
-  await Category.findByIdAndRemove(req.body.categoryid);
-  res.redirect("/categories");
+  try {
+    await Category.findByIdAndRemove(req.params.id);
+    res.redirect("/categories");
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 // Handle Category update on POST.
