@@ -4,7 +4,10 @@ const Category = require("../models/category");
 
 // Display list of all Categories.
 exports.category_list = asyncHandler(async (req, res, next) => {
-  const allCategories = await Category.find().sort({ name: 1 }).exec();
+  const allCategories = await Category.find({}, { name: 1, description: 1 })
+    .sort({ name: 1 })
+    .exec();
+
   res.json(allCategories);
 });
 
@@ -40,7 +43,7 @@ exports.category_create_post = [
   asyncHandler(async (req, res, next) => {
     // Extract the validation errors from a request.
     const errors = validationResult(req);
-
+    console.log("received post request");
     // Create Category object with escaped and trimmed data
     const category = new Category({
       name: req.body.name,
@@ -56,9 +59,10 @@ exports.category_create_post = [
       // Data from form is valid.
 
       // Save category.
-      await category.save();
-      // Redirect to new category record.
-      res.redirect(category.url);
+      //TODO await category.save();
+
+      // Send a valid response
+      res.json(category.url);
     }
   }),
 ];
