@@ -32,7 +32,7 @@ interface ThProps {
 interface tableProps {
   data: Category[];
   enableSearchBar?: Boolean;
-  editHandler(arg0: NullableCategory): void;
+  editHandler(initialCategory: Category, isNew: Boolean): void;
   deleteHandler: (category: Category) => Promise<void>;
 }
 
@@ -125,7 +125,7 @@ export default function CategoryTableSort({
       <Table.Td>{row.description}</Table.Td>
       <Table.Td>
         <Flex justify={"space-between"}>
-          <Button onClick={() => editHandler} color="grey">
+          <Button onClick={() => editHandler(row, false)} color="grey">
             Edit
           </Button>
           <Button onClick={() => deleteHandler(row)} color="red">
@@ -138,7 +138,20 @@ export default function CategoryTableSort({
   rows.push(
     <Table.Tr key={"fdsfdsfds"}>
       <Table.Td colSpan={4}>
-        <Button fullWidth variant="light">
+        <Button
+          onClick={() =>
+            editHandler(
+              {
+                _id: "",
+                name: "",
+                description: "",
+              },
+              true
+            )
+          }
+          fullWidth
+          variant="light"
+        >
           {"+ New category"}
         </Button>
       </Table.Td>
