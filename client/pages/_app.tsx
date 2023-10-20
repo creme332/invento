@@ -4,12 +4,9 @@ import { MantineProvider, Container, LoadingOverlay } from "@mantine/core";
 import { theme } from "../theme";
 import Header from "../components/HeaderMegaMenu";
 import Footer from "../components/FooterSimple";
-import { useState } from "react";
-import { useDisclosure } from "@mantine/hooks";
 
 export default function App({ Component, pageProps }: any) {
-  const [fetchingData, setFetchingData] = useState(true);
-  const [visible, { toggle }] = useDisclosure(true);
+  const BACKEND_URL = "http://localhost:3001";
 
   return (
     <MantineProvider defaultColorScheme="dark" theme={theme}>
@@ -31,11 +28,10 @@ export default function App({ Component, pageProps }: any) {
           // ! Note that position: relative is required for loading overlay to work
         }
         <LoadingOverlay
-          visible={visible}
           zIndex={1000}
           overlayProps={{ radius: "sm", blur: 2 }}
         />
-        <Component fetchingData={fetchingData} {...pageProps} />
+        <Component {...pageProps} backendURL={BACKEND_URL} />
       </Container>
       <Footer />
     </MantineProvider>
