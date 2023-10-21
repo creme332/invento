@@ -1,0 +1,9 @@
+.card {
+  height: 350px;
+  display: grid;
+  place-items: "center";
+}
+
+.card:hover {
+  background-color: var(--mantine-color-dark-5);
+}
