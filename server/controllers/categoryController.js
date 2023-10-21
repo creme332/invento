@@ -43,7 +43,13 @@ exports.category_create_post = [
 
     // Check for errors in received data. If so, send error messages
     if (!errors.isEmpty()) {
-      res.writeHead(400, `${JSON.stringify(errors.array().map((e) => e.msg))}`);
+      res.writeHead(
+        400,
+        `${errors
+          .array()
+          .map((e) => e.msg)
+          .join()}`
+      );
       return res.send();
     }
 
@@ -91,9 +97,9 @@ exports.category_delete_post = asyncHandler(async (req, res, next) => {
   if (items.length > 0) {
     res.writeHead(
       403,
-      `Cannot delete a category that is used by the following items: ${JSON.stringify(
-        items.map((e) => e.name)
-      )} `,
+      `Cannot delete a category that is used by the following items: ${items
+        .map((e) => e.name)
+        .join()} `,
       {
         "content-type": "application/json",
       }
