@@ -51,9 +51,29 @@ exports.item_by_status = asyncHandler(async (req, res, next) => {
   res.json(groupItemsByStatus);
 });
 
-// Display list of all Items.
+// Display list of all Items. The category field is the category name
 exports.item_list = asyncHandler(async (req, res, next) => {
-  const allItems = await Item.find().sort({ name: 1 }).exec();
+  const allItems = await Item.aggregate([
+    {
+      $lookup: {
+        from: "categories",
+        localField: "category",
+        foreignField: "_id",
+        as: "category",
+      },
+    },
+    {
+      $project: {
+        name: 1,
+        description: 1,
+        status: 1,
+        stock: 1,
+        image: 1,
+        category: { $first: "$category.name" },
+      },
+    },
+  ]);
+  // const allItems = await Item.find().sort({ name: 1 }).exec();
   res.json(allItems);
 });
 
