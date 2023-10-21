@@ -10,12 +10,16 @@ interface props {
 
 export default function CategoryForm({ backendURL, displayError }: props) {
   const router = useRouter();
-  const initialCategory = router.query.category
-    ? router.query.category
-    : {
-        name: "",
-        description: "",
-      };
+  const editMode = router.query.category ? true : false; // if category has been specified, edit mode  = true
+
+  // Determine values to be set in form.
+  const initialCategory = {
+    name: editMode ? JSON.parse(router.query.category as string).name : "",
+    description: editMode
+      ? JSON.parse(router.query.category as string).description
+      : "",
+  };
+
   const form = useForm({
     initialValues: initialCategory,
 
@@ -28,6 +32,11 @@ export default function CategoryForm({ backendURL, displayError }: props) {
   });
 
   async function sendPostRequest(e: SyntheticEvent) {
+    const createURL = `${backendURL}/category/create`;
+    const editURL = `${backendURL}/category/${
+      JSON.parse(router.query.category as string)._id
+    }/update`;
+
     e.preventDefault(); // prevent form from reloading on submission
     console.log("Form values: ", form.values);
 
@@ -37,7 +46,7 @@ export default function CategoryForm({ backendURL, displayError }: props) {
     // if form has no errors, send request
     if (form.isValid()) {
       try {
-        const response = await fetch(`${backendURL}/category/create`, {
+        const response = await fetch(editMode ? editURL : createURL, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
