@@ -3,18 +3,11 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import CategoryTableSort from "../components/TableSort";
 import { Category } from "../common/types";
+import { appProps } from "../common/types";
 
-interface categoriesProps {
-  backendURL: string;
-  displayError(message: string): void;
-}
-
-export default function Categories({
-  backendURL,
-  displayError,
-}: categoriesProps) {
+export default function Categories({ backendURL, displayError }: appProps) {
   const router = useRouter();
-  const [categories, setCategories] = useState<any | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
 
   async function fetchCategories() {
     try {
@@ -80,8 +73,8 @@ export default function Categories({
 
   return (
     <>
-      <Title mb={20}>All categories</Title>
-      {categories ? (
+      <Title mb={20}>All categories ({categories.length})</Title>
+      {categories.length > 0 ? (
         <CategoryTableSort
           editHandler={editCategory}
           deleteHandler={deleteCategory}
