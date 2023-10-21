@@ -1,21 +1,14 @@
-import {
-  TextInput,
-  Button,
-  Group,
-  Box,
-  Loader,
-  Alert,
-  Title,
-} from "@mantine/core";
+import { TextInput, Button, Group, Box, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useRouter } from "next/router";
-import { SyntheticEvent, useState } from "react";
+import { SyntheticEvent } from "react";
 
 interface props {
   backendURL: string;
+  displayError(message: string): void;
 }
 
-export default function CategoryForm({ backendURL }: props) {
+export default function CategoryForm({ backendURL, displayError }: props) {
   const router = useRouter();
   const initialCategory = router.query.category
     ? router.query.category
@@ -23,7 +16,6 @@ export default function CategoryForm({ backendURL }: props) {
         name: "",
         description: "",
       };
-  const [serverError, setServerError] = useState("");
   const form = useForm({
     initialValues: initialCategory,
 
@@ -36,7 +28,6 @@ export default function CategoryForm({ backendURL }: props) {
   });
 
   async function sendPostRequest(e: SyntheticEvent) {
-    setServerError("");
     e.preventDefault(); // prevent form from reloading on submission
     console.log("Form values: ", form.values);
 
@@ -59,11 +50,10 @@ export default function CategoryForm({ backendURL }: props) {
             pathname: "/categories",
           });
         } else {
-          console.log(response.statusText);
-          setServerError(response.statusText);
+          displayError(response.statusText);
         }
       } catch (error: any) {
-        console.log(error);
+        displayError("Unable to connect to server. Please try again later.");
       }
     }
   }
@@ -87,9 +77,6 @@ export default function CategoryForm({ backendURL }: props) {
         <Group justify="flex-end" mt="md">
           <Button type="submit">Submit</Button>
         </Group>
-        {serverError.length > 0 ? (
-          <Alert color="red">{serverError}</Alert>
-        ) : null}
       </form>
     </Box>
   );

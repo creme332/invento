@@ -1,12 +1,29 @@
 import "@mantine/core/styles.css";
 import Head from "next/head";
-import { MantineProvider, Container, LoadingOverlay } from "@mantine/core";
+import {
+  MantineProvider,
+  Container,
+  LoadingOverlay,
+  Modal,
+  Alert,
+} from "@mantine/core";
 import { theme } from "../theme";
 import Header from "../components/HeaderMegaMenu";
 import Footer from "../components/FooterSimple";
+import { IconInfoCircle } from "@tabler/icons-react";
+import { useDisclosure } from "@mantine/hooks";
+import { useState } from "react";
 
 export default function App({ Component, pageProps }: any) {
   const BACKEND_URL = "http://localhost:3001";
+  const [modalOpened, modalHandler] = useDisclosure(false);
+  const [modalText, setModalText] = useState("hello");
+
+  function displayError(message: string) {
+    // if error obtained, display error in modal
+    setModalText(message);
+    modalHandler.open();
+  }
 
   return (
     <MantineProvider defaultColorScheme="dark" theme={theme}>
@@ -22,6 +39,20 @@ export default function App({ Component, pageProps }: any) {
         />
       </Head>
       <Header />
+      <Modal
+        opened={modalOpened}
+        onClose={modalHandler.close}
+        withCloseButton={false}
+      >
+        <Alert
+          variant="filled"
+          color="red"
+          title="Error"
+          icon={<IconInfoCircle />}
+        >
+          {modalText}
+        </Alert>
+      </Modal>
       <Container pos={"relative"}>
         {" "}
         {
@@ -31,7 +62,11 @@ export default function App({ Component, pageProps }: any) {
           zIndex={1000}
           overlayProps={{ radius: "sm", blur: 2 }}
         />
-        <Component {...pageProps} backendURL={BACKEND_URL} />
+        <Component
+          {...pageProps}
+          displayError={displayError}
+          backendURL={BACKEND_URL}
+        />
       </Container>
       <Footer />
     </MantineProvider>

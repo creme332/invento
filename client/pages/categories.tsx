@@ -6,20 +6,28 @@ import { Category } from "../common/types";
 
 interface categoriesProps {
   backendURL: string;
+  displayError(message: string): void;
 }
 
-export default function Categories({ backendURL }: categoriesProps) {
+export default function Categories({
+  backendURL,
+  displayError,
+}: categoriesProps) {
   const router = useRouter();
   const [categories, setCategories] = useState<any | null>(null);
 
   async function fetchCategories() {
     try {
       const res = await fetch(`${backendURL}/categories`);
-      const jsonObj = await res.json();
-      console.log(jsonObj);
-      setCategories(jsonObj);
-    } catch (error) {
-      console.log(error);
+      if (!res.ok) {
+        displayError(res.statusText);
+      } else {
+        const jsonObj = await res.json();
+        console.log(jsonObj);
+        setCategories(jsonObj);
+      }
+    } catch (err) {
+      displayError("Unable to connect to server. Please try again later.");
     }
   }
 
@@ -54,13 +62,15 @@ export default function Categories({ backendURL }: categoriesProps) {
         }
       );
       console.log(response);
+
       if (response.ok) {
-        router.push({
-          pathname: "/categories",
-        });
+        // if request succeeded, fetch new list of categories
+        fetchCategories();
+      } else {
+        displayError(response.statusText);
       }
     } catch (error) {
-      console.log(error);
+      displayError("Unable to connect to server. Please try again later.");
     }
   }
 
