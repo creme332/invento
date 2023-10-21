@@ -1,6 +1,7 @@
 const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
 const Category = require("../models/category");
+const Item = require("../models/item");
 
 // Display list of all Categories.
 exports.category_list = asyncHandler(async (req, res, next) => {
@@ -51,29 +52,53 @@ exports.category_create_post = [
     });
 
     if (!errors.isEmpty()) {
-      res.json({
-        errors: errors.array(),
-      });
+      res.writeHead(440, `${JSON.stringify()(errors.array())}`);
+      res.send();
     } else {
       // Data from form is valid.
-
-      // Save category.
-      await category.save();
-
-      // Send a valid response
-      res.json(category.url);
+      // TODO: Check if category name is unique
+      try {
+        // Save category.
+        await category.save();
+        // Send a valid response
+        res.json(category.url);
+      } catch (error) {
+        res.writeHead(440, `${error}`);
+        res.send();
+      }
     }
   }),
 ];
 
 // Handle Category delete on POST.
-// TODO: Add validation
 exports.category_delete_post = asyncHandler(async (req, res, next) => {
-  try {
-    await Category.findByIdAndRemove(req.params.id);
-    res.redirect("/categories");
-  } catch (err) {
-    console.log(err);
+  const [category, items] = await Promise.all([
+    Category.findById(req.params.id).exec(),
+    Item.find({ category: req.params.id }).exec(),
+  ]);
+
+  // check if category exists
+  if (!category) {
+    const err = new Error("Category not found");
+    err.status = 404;
+    return next(err);
+  }
+
+  if (items.length > 0) {
+    // prevent deletion of a category if an item uses that category
+    res.writeHead(440, "Cannot delete a category that is used by an item.", {
+      "content-type": "application/json",
+    });
+    res.send();
+    // res.send({ error: , items: items });
+  } else {
+    try {
+      // category exists and is unused so delete it
+      await Category.findByIdAndRemove(req.params.id);
+      res.redirect("/categories");
+    } catch (err) {
+      console.log(err);
+    }
   }
 });
 
