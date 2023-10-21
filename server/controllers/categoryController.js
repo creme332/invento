@@ -31,16 +31,12 @@ exports.category_create_post = [
     .trim()
     .isLength({ min: 3 })
     .escape()
-    .withMessage("Name must have at least 3 characters.")
-    .isAlphanumeric()
-    .withMessage("Name must not contain non-alphanumeric characters."),
+    .withMessage("Name must have at least 3 characters."),
   body("description")
     .trim()
     .isLength({ min: 3 })
     .escape()
-    .withMessage("Description must have at least 3 characters.")
-    .isAlphanumeric()
-    .withMessage("Description must not non-alphanumeric characters."),
+    .withMessage("Description must have at least 3 characters."),
   asyncHandler(async (req, res, next) => {
     // Extract the validation errors from a request.
     const errors = validationResult(req);
@@ -116,14 +112,20 @@ exports.category_delete_post = asyncHandler(async (req, res, next) => {
 });
 
 // Handle Category update on POST.
-// TODO: Add validation
 exports.category_update_post = asyncHandler(async (req, res, next) => {
   // Create a Category object with escaped/trimmed data and old id.
   const category = new Category({
+    _id: req.params.id,
     name: req.body.name,
     description: req.body.description,
   });
 
-  await Category.findByIdAndUpdate(req.params.id, category, {});
-  res.redirect(category.url);
+  try {
+    // category exists and is unused so delete it
+    await Category.findByIdAndUpdate(req.params.id, category, {});
+    res.send("success");
+  } catch (err) {
+    res.writeHead(500, `${err}`);
+    res.send();
+  }
 });
