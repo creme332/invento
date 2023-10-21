@@ -1,7 +1,8 @@
 .card {
-  height: 350px;
+  width: 250px;
+  height: 220px;
   display: grid;
-  place-items: "center";
+  place-items: center;
 }
 
 .card:hover {

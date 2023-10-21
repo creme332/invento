@@ -1,4 +1,6 @@
 .card {
+  width: 250px;
+  height: 220px;
   background-color: var(--mantine-color-body);
 }
 

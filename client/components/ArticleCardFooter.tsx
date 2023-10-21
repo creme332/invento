@@ -41,7 +41,7 @@ export default function ArticleCardFooter({ item }: cardProps) {
           }&${Math.random()}`}
           alt="A random image"
           fallbackSrc="https://placehold.co/600x400"
-          height={180}
+          height={100}
         />
       </Card.Section>
 
