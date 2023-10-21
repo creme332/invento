@@ -1,6 +1,6 @@
-# invento
+# invento 🤠
 
-A basic inventory management app built with MERN.
+A basic inventory management app built with MERN stack.
 
 
 ![Screenshot of website](image.png)
@@ -8,6 +8,11 @@ A basic inventory management app built with MERN.
 [Live Preview ▶]()
 
 ## Features
+-  Table with sorting and search capabilites
+-  CRUD operations on items and categories
+-  Dashboard with detailed statistics and graphs
+-  Mobile-responsive UI
+-  Data validation both on frontend and backend
 
 ## Installation
 
@@ -21,28 +26,34 @@ Navigate to project:
 cd invento
 ```
 ### Backend
-To install dependencies:
+To install backend dependencies:
 ```bash
 cd server
 npm install
 ```
 
+If you don't already have a MongoDB database named `invento`, create one with MongoDB Atlas. Set the initial collection as `Collection0`.
+
 In the `server` folder create a `.env` file  with the following contents:
 ```bash
-# your mongo connection string
-MONGO_STRING="239482"
+# Replace with mongo connection string
+MONGO_STRING="mongodb+srv://cooluser:coolpassword@cluster0.lz91hw2.mongodb.net/invento?retryWrites=true&w=majority"
 ```
-> 🟢 Note: If you don't already have a MongoDB database, create one named `invento` with MongoDB Atlas.
-To populate database:
+> 🔴 **Note**: Do not forget the `invento?` option in your connection string.
+
+To add sample data to your database:
+
+To populate your database:
+```bash
+node populatedb
 ```
-node populatedb <your MongoDB url>
-```
-> 🟢 Note: On Windows you need to wrap `<your MongoDB url>` inside double (")
+
+> 🟢 **Note**: You may now delete the previously created collection `Collection0`.
 
 To start local server:
 
 ```bash
-npm run devstart
+npm run dev
 ```
 
 Backend is deployed at [http://localhost:3001](http://localhost:3001).
@@ -63,26 +74,45 @@ npm run dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Diagrams
-![](/design/wireframe.excalidraw.png)
+![wireframe of website](/design/wireframe.excalidraw.png)
 
 ## Usage
 
 ### API endpoints
 
-| Endpoint                     | Meaning                                          |
-| ---------------------------- | ------------------------------------------------ |
-| `GET /items`                 | Get the list of items in inventory.              |
-| `GET /item/{id}`             | Get the item with ID `id`.                       |
-| `GET /categories`            | Get the list of item categories.                 |
-| `GET /category/{id}`         | Get the category with ID `id`.                   |
-| `POST /item/create`          | POST request for creating item.                  |
-| `POST /category/create`      | POST request for creating category.              |
-| `POST /item/{id}/update`     | POST request for updating item with ID `id`.     |
-| `POST /category/{id}/update` | POST request for updating category with ID `id`. |
-| `POST /item/{id}/delete`     | POST request for deleting item with ID `id`.     |
-| `POST /category/{id}/delete` | POST request for deleting category with ID `id`. |
+| Endpoint                         | Meaning                                          |
+| -------------------------------- | ------------------------------------------------ |
+| `GET /items`                     | Get the list of items in the inventory.          |
+| `GET /items/total`               | Get the total number of items in the inventory.  |
+| `GET /items/grouped-by-status`   | Get the number of items for each status.         |
+| `GET /items/grouped-by-category` | Get the number of items for each category.       |
+| `GET /item/{id}`                 | Get the item with ID `id`.                       |
+| `GET /categories`                | Get the list of item categories.                 |
+| `GET /category/{id}`             | Get the category with ID `id`.                   |
+| `POST /item/create`              | POST request for creating item.                  |
+| `POST /category/create`          | POST request for creating category.              |
+| `POST /item/{id}/update`         | POST request for updating item with ID `id`.     |
+| `POST /category/{id}/update`     | POST request for updating category with ID `id`. |
+| `POST /item/{id}/delete`         | POST request for deleting item with ID `id`.     |
+| `POST /category/{id}/delete`     | POST request for deleting category with ID `id`. |
 
 ## To-do
-- [ ] add chartjs animations
+- [ ] When category is deleted, table is not updated. Might be due to sorting.
+- [ ] when a category is created, ensure that it is unique name.
+- [ ] Create items form
+- [ ] Add appropriate click handlers to item page
+- [ ] Complete dedicated item page (use unsplash api for images)
+- [ ] Editing category not possible yet
+- [ ] add endpoint for total categories and total items
+- [ ] Display total items and total categories in items and categories page. `All items(10)`
+- [ ] Add an error message in all pages when server is down
+- [ ] Require user authentication to upload image
+- [ ] Add image upload feature
+- [ ] create dependency chart
+- [ ] use typescript in backend
+- [ ] Add page transitions with framer motion
+- [ ] For barchart, display only top 5 categories
+- [ ] Deploy to firebase
+
 
 ## References
