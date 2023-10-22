@@ -1,39 +1,179 @@
-import { TextInput, Checkbox, Button, Group, Box, Title } from "@mantine/core";
+import {
+  TextInput,
+  Button,
+  Group,
+  Box,
+  Title,
+  NumberInput,
+  NativeSelect,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useRouter } from "next/router";
+import { Item, appProps, Category, ItemStatus } from "../../common/types";
+import { useEffect, useState, SyntheticEvent } from "react";
 
-export default function CategoryForm() {
+export default function ItemForm({ backendURL, displayError }: appProps) {
+  const router = useRouter();
+  const editMode = router.query.item ? true : false; // if item has been specified, edit mode  = true
+  const [categories, setCategories] = useState<Category[]>([]);
+  const validStatus = ["Available", "Maintenance", "Loaned", "Reserved"];
+
+  function getInitialItem() {
+    if (editMode) {
+      return JSON.parse(router.query.item as string);
+    }
+    const initialItem: Item = {
+      _id: "",
+      name: "",
+      description: "",
+      status: "Available",
+      stock: 0,
+      image: "",
+      price: 0,
+      category: "",
+    };
+
+    return initialItem;
+  }
+
+  function getCategoryNames() {
+    return categories.map((e: Category) => e.name);
+  }
+
   const form = useForm({
-    initialValues: {
-      email: "",
-      termsOfService: false,
-    },
+    initialValues: getInitialItem(),
 
     validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
+      name: (value: string) => {
+        if (value.length < 3) return "Name must have at least 3 characters";
+        if (value.length > 100) return "Name must have at most 100 characters";
+        return null;
+      },
+      description: (value: string) => {
+        if (value.length < 3)
+          return "Description must have at least 3 characters";
+        if (value.length > 100)
+          return "Description must have at most 100 characters";
+        return null;
+      },
+      stock: (value: number) =>
+        value < 0 ? "Stock must be a non-negative number" : null,
+      price: (value: number) =>
+        value < 0 ? "Price must be a non-negative number" : null,
+      category: (value: string) =>
+        getCategoryNames().includes(value) ? null : `Invalid category`,
+      status: (value: ItemStatus) =>
+        validStatus.includes(value)
+          ? null
+          : `Invalid status. Valid status: ${validStatus.join()}`,
     },
+
+    // replace category name with category id
+
+    transformValues: (values) => ({
+      _id: values._id,
+      name: values.name,
+      description: values.description,
+      stock: values.stock,
+      price: values.price,
+      status: values.status,
+      category: getCategoryID(values.category),
+    }),
   });
-  const router = useRouter();
+
+  function getCategoryID(categoryName: string) {
+    const matches = categories.filter((e) => e.name == categoryName);
+    if (matches.length > 0) return matches[0]._id;
+    return "";
+  }
+  async function fetchCategories() {
+    try {
+      const res = await fetch(`${backendURL}/categories`);
+      if (!res.ok) {
+        displayError(res.statusText);
+      } else {
+        const jsonObj = await res.json();
+        console.log("Fetched categories", jsonObj);
+        setCategories(jsonObj);
+      }
+    } catch (err) {
+      displayError("Unable to connect to server. Please try again later.");
+    }
+  }
+
+  async function onStart() {
+    await fetchCategories();
+    const x = await categories[0].name;
+    form.values.category = x;
+    console.log(form.values.category);
+  }
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  async function submitItem(e: SyntheticEvent) {
+    const createURL = `${backendURL}/item/create`;
+    const editURL = editMode
+      ? `${backendURL}/item/${
+          JSON.parse(router.query.item as string)._id
+        }/update`
+      : "";
+
+    e.preventDefault(); // prevent form from reloading on submission
+    console.log("Form values: ", form.values);
+    const x = form.getTransformedValues();
+    console.log("Form transformed values: ", form.getTransformedValues());
+    const finalFormValues = form.getTransformedValues();
+    // validate form and display any errors to user
+    form.validate();
+
+    // if form has no errors, send request
+    if (form.isValid()) {
+      try {
+        const response = await fetch(editMode ? editURL : createURL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(finalFormValues),
+        });
+        console.log(response);
+        if (response.ok) {
+          router.push({
+            pathname: "/items",
+          });
+        } else {
+          displayError(response.statusText);
+        }
+      } catch (error: any) {
+        displayError("Unable to connect to server. Please try again later.");
+      }
+    }
+  }
 
   return (
     <Box maw={340} mx="auto">
-      <Title>
-        {router.query.title ? router.query.title : "Create new item"}
-      </Title>
-      <form onSubmit={form.onSubmit((values) => console.log(values))}>
+      <Title>{editMode ? "Edit item" : "Create new item"}</Title>
+      <form onSubmit={submitItem}>
+        <TextInput withAsterisk label="name" {...form.getInputProps("name")} />
         <TextInput
           withAsterisk
-          label="Email"
-          placeholder="your@email.com"
-          {...form.getInputProps("email")}
+          label="description"
+          {...form.getInputProps("description")}
         />
-
-        <Checkbox
-          mt="md"
-          label="I agree to sell my privacy"
-          {...form.getInputProps("termsOfService", { type: "checkbox" })}
+        <NumberInput min={0} label="price" {...form.getInputProps("price")} />
+        <NumberInput min={0} label="stock" {...form.getInputProps("stock")} />
+        <NativeSelect
+          label="category"
+          data={getCategoryNames()}
+          {...form.getInputProps("category")}
         />
-
+        <NativeSelect
+          label="status"
+          data={validStatus}
+          {...form.getInputProps("status")}
+        />
         <Group justify="flex-end" mt="md">
           <Button type="submit">Submit</Button>
         </Group>
