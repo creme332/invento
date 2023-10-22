@@ -33,9 +33,11 @@ export default function CategoryForm({ backendURL, displayError }: props) {
 
   async function sendPostRequest(e: SyntheticEvent) {
     const createURL = `${backendURL}/category/create`;
-    const editURL = `${backendURL}/category/${
-      JSON.parse(router.query.category as string)._id
-    }/update`;
+    const editURL = router.query.category
+      ? `${backendURL}/category/${
+          JSON.parse(router.query.category as string)._id
+        }/update`
+      : "";
 
     e.preventDefault(); // prevent form from reloading on submission
     console.log("Form values: ", form.values);
