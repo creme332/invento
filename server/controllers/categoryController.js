@@ -55,7 +55,7 @@ exports.category_create_post = [
 
     // Check if category name is unique
     const existingCategory = Category.find({ name: req.body.name }).exec();
-    if (existingCategory) {
+    if (existingCategory.length > 0) {
       res.writeHead(403, `Category ${req.body.name} already exists.`);
       return res.send();
     }
