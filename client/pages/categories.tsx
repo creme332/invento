@@ -24,25 +24,6 @@ export default function Categories({ backendURL, displayError }: appProps) {
     }
   }
 
-  function editCategory(initialCategory: Category, isNew: Boolean) {
-    if (isNew) {
-      router.push({
-        pathname: "/edit/category",
-        query: {
-          title: "Create new category",
-        },
-      });
-    } else {
-      router.push({
-        pathname: "/edit/category",
-        query: {
-          title: "Edit category",
-          category: JSON.stringify(initialCategory),
-        },
-      });
-    }
-  }
-
   async function deleteCategory(category: Category) {
     try {
       const response = await fetch(
@@ -75,7 +56,6 @@ export default function Categories({ backendURL, displayError }: appProps) {
     <>
       <Title mb={20}>All categories ({categories.length})</Title>
       <CategoryTableSort
-        editHandler={editCategory}
         deleteHandler={deleteCategory}
         data={categories}
         enableSearchBar={true}

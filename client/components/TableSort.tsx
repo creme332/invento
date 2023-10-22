@@ -20,7 +20,8 @@ import {
   IconSearch,
 } from "@tabler/icons-react";
 import classes from "../styles/TableSort.module.css";
-import { Category, NullableCategory } from "../common/types";
+import { Category } from "../common/types";
+import Link from "next/link";
 
 interface ThProps {
   children?: React.ReactNode;
@@ -32,7 +33,6 @@ interface ThProps {
 interface tableProps {
   data: Category[];
   enableSearchBar?: Boolean;
-  editHandler(initialCategory: Category, isNew: Boolean): void;
   deleteHandler: (category: Category) => Promise<void>;
 }
 
@@ -89,7 +89,6 @@ function sortData(
 
 export default function CategoryTableSort({
   data,
-  editHandler,
   deleteHandler,
   enableSearchBar = false,
 }: tableProps) {
@@ -125,9 +124,17 @@ export default function CategoryTableSort({
       <Table.Td>{row.description}</Table.Td>
       <Table.Td>
         <Flex justify={"space-between"}>
-          <Button onClick={() => editHandler(row, false)} color="grey">
-            Edit
-          </Button>
+          <Link
+            href={{
+              pathname: "/edit/category",
+              query: {
+                title: "Edit category",
+                category: JSON.stringify(row),
+              },
+            }}
+          >
+            <Button color="grey">Edit</Button>
+          </Link>
           <Button onClick={() => deleteHandler(row)} color="red">
             Delete
           </Button>
@@ -138,22 +145,19 @@ export default function CategoryTableSort({
   rows.push(
     <Table.Tr key={"fdsfdsfds"}>
       <Table.Td colSpan={4}>
-        <Button
-          onClick={() =>
-            editHandler(
-              {
-                _id: "",
-                name: "",
-                description: "",
-              },
-              true
-            )
-          }
-          fullWidth
-          variant="light"
+        <Link
+          style={{ textDecoration: "none" }}
+          href={{
+            pathname: "/edit/category",
+            query: {
+              title: "Create new category",
+            },
+          }}
         >
-          {"+ New category"}
-        </Button>
+          <Button fullWidth variant="light">
+            {"+ New category"}
+          </Button>
+        </Link>
       </Table.Td>
     </Table.Tr>
   );
