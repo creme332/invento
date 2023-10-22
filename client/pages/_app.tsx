@@ -40,6 +40,7 @@ export default function App({ Component, pageProps }: any) {
       </Head>
       <Header />
       <Modal
+        padding={0}
         opened={modalOpened}
         onClose={modalHandler.close}
         withCloseButton={false}
