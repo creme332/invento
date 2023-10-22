@@ -1,12 +1,4 @@
-import {
-  Group,
-  Stack,
-  Title,
-  Card,
-  Text,
-  rem,
-  Avatar,
-} from "@mantine/core";
+import { Group, Stack, Title, Card, Text, rem, Avatar } from "@mantine/core";
 import HorizontalBarChart from "../components/charts/HorizontalBarChart";
 import PieChart from "../components/charts/PieChart";
 import { useEffect, useState } from "react";
@@ -16,12 +8,9 @@ import {
   IconTruckDelivery,
   IconUsers,
 } from "@tabler/icons-react";
+import { appProps } from "../common/types";
 
-interface homepageProps {
-  backendURL: string;
-}
-
-export default function Homepage({ backendURL }: homepageProps) {
+export default function Homepage({ backendURL, displayError }: appProps) {
   const [items, setItems] = useState([]);
   const [barData, setBarData] = useState<any | null>(null);
   const [pieData, setPieData] = useState<any | null>(null); //https://stackoverflow.com/a/65240675/17627866
@@ -57,7 +46,7 @@ export default function Homepage({ backendURL }: homepageProps) {
         itemsByCategory.map((e: any) => e.totalItems),
       ]);
     } catch (error) {
-      console.log(error);
+      displayError("Unable to connect to server. Please try again later.");
     }
   }
 
