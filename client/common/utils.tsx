@@ -22,7 +22,7 @@ export const placeholderItem: Item = {
     "This is a sample description that contains many alphanumeric characters.",
   status: "Available",
   stock: 0,
-  image:"https://placehold.co/600x400?text=Image",
+  image: "https://placehold.co/600x400?text=Image",
   price: 0,
   category: "",
 };

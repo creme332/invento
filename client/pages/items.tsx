@@ -28,12 +28,15 @@ export default function Items({ backendURL, displayError }: appProps) {
   }, []);
 
   function getItemComponents() {
+    // Items are placed in a grid with 3 columns
+    // Determine which item goes into which column
     const columns: number[][] = [[], [], []];
 
     for (let i = 0; i < items.length; i++) {
       columns[i % 3].push(i);
     }
     const columnSize = 3;
+    // TODO: Refactor code below
     return (
       <Grid grow gutter={{ base: 5, xs: "md", md: "xl", xl: 50 }}>
         <Grid.Col span={columnSize}>

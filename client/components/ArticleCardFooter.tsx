@@ -1,3 +1,4 @@
+// Reference: https://ui.mantine.dev/category/article-cards/#article-card-footer
 import {
   Card,
   Image,
@@ -16,7 +17,6 @@ interface cardProps {
 }
 
 export default function ArticleCardFooter({ item }: cardProps) {
-  // Reference: https://ui.mantine.dev/category/article-cards/#article-card-footer
   const theme = useMantineTheme();
 
   return (

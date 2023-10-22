@@ -1,12 +1,10 @@
 import { Title } from "@mantine/core";
-import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import CategoryTableSort from "../components/TableSort";
 import { Category } from "../common/types";
 import { appProps } from "../common/types";
 
 export default function Categories({ backendURL, displayError }: appProps) {
-  const router = useRouter();
   const [categories, setCategories] = useState<Category[]>([]);
 
   async function fetchCategories() {

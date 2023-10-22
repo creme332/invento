@@ -31,7 +31,7 @@ export default function CategoryForm({ backendURL, displayError }: props) {
     },
   });
 
-  async function sendPostRequest(e: SyntheticEvent) {
+  async function submitCategory(e: SyntheticEvent) {
     const createURL = `${backendURL}/category/create`;
     const editURL = router.query.category
       ? `${backendURL}/category/${
@@ -72,7 +72,7 @@ export default function CategoryForm({ backendURL, displayError }: props) {
   return (
     <Box maw={340} mx="auto">
       <Title>{router.query.title ? router.query.title : ""}</Title>
-      <form method="POST" onSubmit={sendPostRequest}>
+      <form method="POST" onSubmit={submitCategory}>
         <TextInput
           withAsterisk
           label="Name"

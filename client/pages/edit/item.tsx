@@ -101,13 +101,6 @@ export default function ItemForm({ backendURL, displayError }: appProps) {
     }
   }
 
-  async function onStart() {
-    await fetchCategories();
-    const x = await categories[0].name;
-    form.values.category = x;
-    console.log(form.values.category);
-  }
-
   useEffect(() => {
     fetchCategories();
   }, []);
