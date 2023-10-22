@@ -50,7 +50,10 @@ export default function ArticleCardFooter({ item }: cardProps) {
             textDecoration: "none",
             color: "var(--mantine-color-gray-4)",
           }}
-          href={`/item/${encodeURIComponent(item._id)}`}
+          href={{
+            pathname: `/item/${item._id}`,
+            query: { id: item._id },
+          }}
         >
           {" "}
           {item.name}
