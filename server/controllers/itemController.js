@@ -79,7 +79,6 @@ exports.item_list = asyncHandler(async (req, res, next) => {
 
 // Display one Item
 exports.item_detail = asyncHandler(async (req, res, next) => {
-  console.log(req.params.id);
   const item = await Item.findById(req.params.id).exec();
   res.json(item);
 });
@@ -137,21 +136,41 @@ exports.item_create_post = [
 ];
 
 // Handle Item delete on POST.
-// TODO: Add validation
 exports.item_delete_post = asyncHandler(async (req, res, next) => {
   const item = Item.findById(req.params.id).exec();
-  await Item.findByIdAndRemove(req.body.itemid);
-  res.redirect("/items");
+
+  // check if item exists
+  if (!item) {
+    res.writeHead(403, `Item does not exist`);
+    return res.send();
+  }
+
+  try {
+    await Item.findByIdAndRemove(req.params.id);
+    return res.send("success");
+  } catch (error) {
+    res.writeHead(500, error);
+    return res.send();
+  }
 });
 
 // Handle Item update on POST.
 exports.item_update_post = asyncHandler(async (req, res, next) => {
   // Create a Item object with escaped/trimmed data and old id.
   const item = new Item({
+    _id: req.body._id,
     name: req.body.name,
     description: req.body.description,
+    price: req.body.price,
+    stock: req.body.stock,
+    category: req.body.category, //! CATEGORY MUST BE ID
+    status: req.body.status,
   });
-
-  await Item.findByIdAndUpdate(req.params.id, item, {});
-  res.redirect(item.url);
+  try {
+    await Item.findByIdAndUpdate(req.params.id, item, {});
+    return res.send("success");
+  } catch (error) {
+    res.writeHead(500, error);
+    return res.send();
+  }
 });
