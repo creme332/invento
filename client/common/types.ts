@@ -1,3 +1,5 @@
+export type ItemStatus = "Available" | "Maintenance" | "Loaned" | "Reserved";
+
 export interface Category {
   _id: string;
   name: string;
@@ -12,7 +14,7 @@ export interface Item {
   _id: string;
   name: string;
   description: string;
-  status: string;
+  status: ItemStatus;
   stock: number;
   image: string;
   price: number;
