@@ -94,7 +94,7 @@ export default function CategoryTableSort({
   enableSearchBar = false,
 }: tableProps) {
   const [search, setSearch] = useState("");
-  const [sortedData, setSortedData] = useState(data);
+  const [sortedData, setSortedData] = useState<Category[]>(data);
   const [sortBy, setSortBy] = useState<keyof Category | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
 
@@ -116,7 +116,7 @@ export default function CategoryTableSort({
   useEffect(() => {
     setSortedData(data);
     console.log(data);
-  }, []);
+  }, [data]);
 
   const rows = sortedData.map((row) => (
     <Table.Tr key={row._id}>

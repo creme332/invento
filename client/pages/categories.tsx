@@ -74,14 +74,12 @@ export default function Categories({ backendURL, displayError }: appProps) {
   return (
     <>
       <Title mb={20}>All categories ({categories.length})</Title>
-      {categories.length > 0 ? (
-        <CategoryTableSort
-          editHandler={editCategory}
-          deleteHandler={deleteCategory}
-          data={categories}
-          enableSearchBar={true}
-        />
-      ) : null}
+      <CategoryTableSort
+        editHandler={editCategory}
+        deleteHandler={deleteCategory}
+        data={categories}
+        enableSearchBar={true}
+      />
     </>
   );
 }
