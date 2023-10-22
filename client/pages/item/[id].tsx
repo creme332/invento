@@ -30,7 +30,7 @@ export default function ItemPage({ backendURL, displayError }: appProps) {
   // Reference https://ui.mantine.dev/category/grids/#lead-grid
   const SECONDARY_COL_HEIGHT = `calc(${PRIMARY_COL_HEIGHT} / 2 - var(--mantine-spacing-md) / 2)`;
   const maxStock = 100 as number;
-  const stockLevel: number = Math.min(item.stock, maxStock) / maxStock;
+  const stockLevel: number = (100 * Math.min(item.stock, maxStock)) / maxStock;
   const imageURL = item.image
     ? item.image
     : `https://source.unsplash.com/random/600x400?${
