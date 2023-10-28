@@ -102,6 +102,7 @@ export default function ItemForm({ backendURL, displayError }: appProps) {
     if (matches.length > 0) return matches[0]._id;
     return "";
   }
+
   async function fetchCategories() {
     try {
       const res = await fetch(`${backendURL}/categories`);
@@ -111,14 +112,31 @@ export default function ItemForm({ backendURL, displayError }: appProps) {
         const jsonObj = await res.json();
         console.log("Fetched categories", jsonObj);
         setCategories(jsonObj);
+        return jsonObj;
       }
     } catch (err) {
       displayError("Unable to connect to server. Please try again later.");
+      return [];
     }
   }
 
+  async function onLoad() {
+    const latestCategories = await fetchCategories(); //! value of categories variable may not be up-to-date
+    const size = latestCategories.length;
+
+    // Check if categories list is empty: output error
+    if (size == 0) {
+      displayError(
+        "No categories exist. Please create at least one category before proceeding."
+      );
+      return;
+    }
+
+    form.setFieldValue("category", latestCategories[0].name);
+  }
+
   useEffect(() => {
-    fetchCategories();
+    onLoad();
   }, []);
 
   async function submitItem(e: SyntheticEvent) {
@@ -175,10 +193,12 @@ export default function ItemForm({ backendURL, displayError }: appProps) {
         <NumberInput min={0} label="stock" {...form.getInputProps("stock")} />
         <NativeSelect
           label="category"
+          withAsterisk
           data={getCategoryNames()}
           {...form.getInputProps("category")}
         />
         <NativeSelect
+          withAsterisk
           label="status"
           data={validStatus}
           {...form.getInputProps("status")}
