@@ -54,8 +54,8 @@ export default function Items({ backendURL, displayError }: appProps) {
             {columns[1].map((i) => (
               <ArticleCardFooter key={`card-col1-${i}`} item={items[i]} />
             ))}
+            {items.length % 3 == 1 ? <EmptyCard /> : null}
           </Flex>
-          {items.length % 3 == 1 ? <EmptyCard /> : null}
         </Grid.Col>
 
         <Grid.Col span={columnSize}>
@@ -64,8 +64,8 @@ export default function Items({ backendURL, displayError }: appProps) {
             {columns[2].map((i) => (
               <ArticleCardFooter key={`card-col2-${i}`} item={items[i]} />
             ))}
+            {items.length % 3 == 2 ? <EmptyCard /> : null}
           </Flex>
-          {items.length % 3 == 2 ? <EmptyCard /> : null}
         </Grid.Col>
       </Grid>
     );
