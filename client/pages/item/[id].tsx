@@ -105,7 +105,7 @@ export default function ItemPage({ backendURL, displayError }: appProps) {
     <Container my="md">
       <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
         <Image
-          component={NextImage}
+          // component={NextImage}
           src={imageURL}
           alt="A random image"
           fallbackSrc="https://placehold.co/600x400?text=Image"
