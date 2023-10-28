@@ -11,9 +11,12 @@ import {
 import { appProps } from "../common/types";
 
 export default function Homepage({ backendURL, displayError }: appProps) {
-  const [items, setItems] = useState([]);
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalCategories, setTotalCategories] = useState(0);
+
   const [barData, setBarData] = useState<any | null>(null);
   const [pieData, setPieData] = useState<any | null>(null); //https://stackoverflow.com/a/65240675/17627866
+  const datasetSize = 5;
 
   async function fetchDataAt(pathname: string) {
     try {
@@ -29,12 +32,13 @@ export default function Homepage({ backendURL, displayError }: appProps) {
   async function fetchAllData() {
     try {
       // fetch data as dictionaries
-      const fetchedItems = await fetchDataAt("/items");
+      const itemTotal = await fetchDataAt("/items/total");
+      const categoriesTotal = await fetchDataAt("/categories/total");
       const itemsByCategory = await fetchDataAt("/items/grouped-by-category");
       const itemsByStatus = await fetchDataAt("/items/grouped-by-status");
-      // console.log(itemsByCategory, itemsByStatus);
 
-      setItems(fetchedItems);
+      setTotalItems(itemTotal);
+      setTotalCategories(categoriesTotal);
 
       setPieData([
         itemsByStatus.map((e: any) => e.status),
@@ -70,8 +74,8 @@ export default function Homepage({ backendURL, displayError }: appProps) {
           {barData ? (
             <HorizontalBarChart
               dataLabel="Count"
-              labelsArray={barData[0]}
-              dataArray={barData[1]}
+              labelsArray={barData[0].slice(0, datasetSize)}
+              dataArray={barData[1].slice(0, datasetSize)}
             />
           ) : (
             <HorizontalBarChart />
@@ -105,14 +109,14 @@ export default function Homepage({ backendURL, displayError }: appProps) {
               style={{ width: rem(30), height: rem(30), color: "#FF66B2" }}
               stroke={1.5}
             />
-            <Text fz={"sm"}>Total items: 10</Text>
+            <Text fz={"sm"}>Total items: {totalItems}</Text>
           </Group>
           <Group mt="lg">
             <IconCategory
               style={{ width: rem(30), height: rem(30), color: "#FFB266" }}
               stroke={1.5}
             />{" "}
-            <Text fz={"sm"}>Total categories: 10</Text>
+            <Text fz={"sm"}>Total categories: {totalCategories}</Text>
           </Group>
           <Group mt="lg">
             <IconUsers
