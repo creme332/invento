@@ -11,7 +11,6 @@ import {
   Badge,
   ActionIcon,
   useMantineTheme,
-  Stack,
   Flex,
 } from "@mantine/core";
 import { useRouter } from "next/router";
@@ -22,6 +21,7 @@ import { getStatusBadgeColor } from "../../common/utils";
 import { placeholderItem } from "../../common/utils";
 import { Item, appProps } from "../../common/types";
 import { useEffect, useState } from "react";
+import NextImage from "next/image";
 
 export default function ItemPage({ backendURL, displayError }: appProps) {
   const router = useRouter();
@@ -105,10 +105,11 @@ export default function ItemPage({ backendURL, displayError }: appProps) {
     <Container my="md">
       <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
         <Image
+          component={NextImage}
           src={imageURL}
           alt="A random image"
           fallbackSrc="https://placehold.co/600x400?text=Image"
-          height={PRIMARY_COL_HEIGHT}
+          height={parseInt(PRIMARY_COL_HEIGHT, 10)}
           radius={"md"}
         />
         <Grid gutter="md">
