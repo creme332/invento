@@ -8,12 +8,13 @@ import {
   IconTruckDelivery,
   IconUsers,
 } from "@tabler/icons-react";
-import { appProps } from "../common/types";
+import { appProps, Item } from "../common/types";
+import { formatRelative } from "date-fns";
 
 export default function Homepage({ backendURL, displayError }: appProps) {
   const [totalItems, setTotalItems] = useState(0);
   const [totalCategories, setTotalCategories] = useState(0);
-
+  const [recentItems, setRecentItems] = useState<Item[]>([]);
   const [barData, setBarData] = useState<any | null>(null);
   const [pieData, setPieData] = useState<any | null>(null); //https://stackoverflow.com/a/65240675/17627866
   const datasetSize = 5;
@@ -32,11 +33,13 @@ export default function Homepage({ backendURL, displayError }: appProps) {
   async function fetchAllData() {
     try {
       // fetch data as dictionaries
+      const fetchedRecentItems = await fetchDataAt("/items/recent/3");
       const itemTotal = await fetchDataAt("/items/total");
       const categoriesTotal = await fetchDataAt("/categories/total");
       const itemsByCategory = await fetchDataAt("/items/grouped-by-category");
       const itemsByStatus = await fetchDataAt("/items/grouped-by-status");
 
+      setRecentItems(fetchedRecentItems);
       setTotalItems(itemTotal);
       setTotalCategories(categoriesTotal);
 
@@ -57,6 +60,12 @@ export default function Homepage({ backendURL, displayError }: appProps) {
   useEffect(() => {
     fetchAllData();
   }, []);
+
+  function getRelativeDate(_id: String) {
+    const timestamp = _id.toString().substring(0, 8);
+    const date = new Date(parseInt(timestamp, 16) * 1000);
+    return `created ${formatRelative(date, new Date())}`;
+  }
 
   return (
     <Stack>
@@ -89,11 +98,7 @@ export default function Homepage({ backendURL, displayError }: appProps) {
           )}
         </Card>
       </Group>
-      <Group
-        style={{ height: "300px" }}
-        // justify="space-between"
-        gap={20}
-      >
+      <Group style={{ height: "300px" }} gap={20}>
         <Card
           style={{ flex: 1, height: "100%" }}
           shadow="sm"
@@ -144,34 +149,19 @@ export default function Homepage({ backendURL, displayError }: appProps) {
           <Text fw={600} size="sm">
             Latest items
           </Text>
-
-          <Group mt="lg">
-            <Avatar radius="sm" />
-            <div>
-              <Text fw={500}>Item 1</Text>
-              <Text fz="xs" c="dimmed">
-                created 34 minutes ago
-              </Text>
-            </div>
-          </Group>
-          <Group mt="lg">
-            <Avatar radius="sm" />
-            <div>
-              <Text fw={500}>Item 1</Text>
-              <Text fz="xs" c="dimmed">
-                posted 34 minutes ago
-              </Text>
-            </div>
-          </Group>
-          <Group mt="lg">
-            <Avatar radius="sm" />
-            <div>
-              <Text fw={500}>Item 1</Text>
-              <Text fz="xs" c="dimmed">
-                posted 34 minutes ago
-              </Text>
-            </div>
-          </Group>
+          {recentItems.map((item) => (
+            <Group mt="lg">
+              <Avatar src={null} alt={item.name} radius="sm">
+                I{" "}
+              </Avatar>
+              <div>
+                <Text fw={500}>{item.name}</Text>
+                <Text fz="xs" c="dimmed">
+                  {getRelativeDate(item._id)}
+                </Text>
+              </div>
+            </Group>
+          ))}
         </Card>
       </Group>
     </Stack>
