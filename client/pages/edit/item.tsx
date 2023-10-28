@@ -20,8 +20,11 @@ export default function ItemForm({ backendURL, displayError }: appProps) {
 
   function getInitialItem() {
     if (editMode) {
+      // edit item mode
       return JSON.parse(router.query.item as string);
     }
+
+    // create item mode
     const initialItem: Item = {
       _id: "",
       name: "",
@@ -68,17 +71,30 @@ export default function ItemForm({ backendURL, displayError }: appProps) {
           : `Invalid status. Valid status: ${validStatus.join()}`,
     },
 
-    // replace category name with category id
+    transformValues: (values) => {
+      // replace category name with category id
+      if (editMode) {
+        return {
+          _id: values._id,
+          name: values.name,
+          description: values.description,
+          stock: values.stock,
+          price: values.price,
+          status: values.status,
+          category: getCategoryID(values.category),
+        };
+      }
 
-    transformValues: (values) => ({
-      _id: values._id,
-      name: values.name,
-      description: values.description,
-      stock: values.stock,
-      price: values.price,
-      status: values.status,
-      category: getCategoryID(values.category),
-    }),
+      // if new item is created, do not include item id
+      return {
+        name: values.name,
+        description: values.description,
+        stock: values.stock,
+        price: values.price,
+        status: values.status,
+        category: getCategoryID(values.category),
+      };
+    },
   });
 
   function getCategoryID(categoryName: string) {
