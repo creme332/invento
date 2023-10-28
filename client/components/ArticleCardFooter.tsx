@@ -22,7 +22,7 @@ export default function ArticleCardFooter({ item }: cardProps) {
 
   return (
     <Card withBorder padding="lg" radius="md" className={classes.card}>
-      <Card.Section mb="sm">
+      <Card.Section h={100} mb="sm">
         <Image
           component={NextImage}
           src={`https://source.unsplash.com/random/?${
@@ -31,6 +31,8 @@ export default function ArticleCardFooter({ item }: cardProps) {
           alt="A random image"
           fallbackSrc="https://placehold.co/600x400"
           height={100}
+          width={250}
+          loading="lazy"
         />
       </Card.Section>
 
