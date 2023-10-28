@@ -3,6 +3,12 @@ const asyncHandler = require("express-async-handler");
 const Item = require("../models/item");
 
 // Display statistics of Items.
+
+exports.item_total = asyncHandler(async (req, res, next) => {
+  const itemTotal = await Item.find().count().exec();
+  res.json(itemTotal);
+});
+
 exports.item_by_category = asyncHandler(async (req, res, next) => {
   // get number of items for each category
   const groupItemsByCategory = await Item.aggregate([
@@ -121,19 +127,20 @@ exports.item_create_post = [
     }
     const item = new Item(itemDict);
 
+    // if errors present, send error array
     if (!errors.isEmpty()) {
       res.json({
         errors: errors.array(),
       });
       return;
-    } else {
-      // Data from form is valid.
-
-      // Save item.
-      await item.save();
-      // Redirect to new item record.
-      res.redirect(item.url);
     }
+    // Data from form is valid.
+
+    // Save item.
+    await item.save();
+
+    // Redirect to new item record.
+    return res.send("success");
   }),
 ];
 

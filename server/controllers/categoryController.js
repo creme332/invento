@@ -4,6 +4,13 @@ const Category = require("../models/category");
 const Item = require("../models/item");
 
 // Display list of all Categories.
+
+exports.category_total = asyncHandler(async (req, res, next) => {
+  const total = await Category.find().count().exec();
+  res.json(total);
+});
+
+
 exports.category_list = asyncHandler(async (req, res, next) => {
   const allCategories = await Category.find({}, { name: 1, description: 1 })
     .sort({ name: 1 })
