@@ -34,6 +34,7 @@ export default function HeaderMegaMenu() {
           </Group>
 
           <Burger
+            aria-label="Open menu"
             opened={drawerOpened}
             onClick={toggleDrawer}
             hiddenFrom="sm"
