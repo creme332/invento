@@ -10,6 +10,7 @@ import {
 } from "@tabler/icons-react";
 import { appProps, Item } from "../common/types";
 import { formatRelative } from "date-fns";
+import { ERROR } from "../common/utils";
 
 export default function Homepage({ backendURL, displayError }: appProps) {
   const [totalItems, setTotalItems] = useState(0);
@@ -53,8 +54,7 @@ export default function Homepage({ backendURL, displayError }: appProps) {
         itemsByCategory.map((e: any) => e.totalItems),
       ]);
     } catch (error) {
-      displayError("Unable to connect to server. Please try again later.");
-    }
+      displayError(ERROR.SERVER_CONNECTION);    }
   }
 
   useEffect(() => {

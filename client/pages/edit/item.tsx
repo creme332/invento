@@ -11,6 +11,7 @@ import { useForm } from "@mantine/form";
 import { useRouter } from "next/router";
 import { Item, appProps, Category, ItemStatus } from "../../common/types";
 import { useEffect, useState, SyntheticEvent } from "react";
+import { ERROR } from "../../common/utils";
 
 export default function ItemForm({ backendURL, displayError }: appProps) {
   const router = useRouter();
@@ -115,7 +116,7 @@ export default function ItemForm({ backendURL, displayError }: appProps) {
         return jsonObj;
       }
     } catch (err) {
-      displayError("Unable to connect to server. Please try again later.");
+      displayError(ERROR.SERVER_CONNECTION);
       return [];
     }
   }
@@ -126,9 +127,7 @@ export default function ItemForm({ backendURL, displayError }: appProps) {
 
     // Check if categories list is empty: output error
     if (size == 0) {
-      displayError(
-        "No categories exist. Please create at least one category before proceeding."
-      );
+      displayError(ERROR.EMPTY_CATEGORY_LIST);
       return;
     }
 
@@ -174,7 +173,7 @@ export default function ItemForm({ backendURL, displayError }: appProps) {
           displayError(response.statusText);
         }
       } catch (error: any) {
-        displayError("Unable to connect to server. Please try again later.");
+        displayError(ERROR.SERVER_CONNECTION);
       }
     }
   }

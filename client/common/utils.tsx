@@ -26,3 +26,10 @@ export const placeholderItem: Item = {
   price: 0,
   category: "",
 };
+
+export const ERROR = {
+  SERVER_CONNECTION: "Unable to connect to server. Please try again later.",
+  EMPTY_CATEGORY_LIST:
+    "No categories exist. Please create at least one category before proceeding.",
+  MISSING_ITEM_ID: "Invalid URL: Item ID is missing.",
+};

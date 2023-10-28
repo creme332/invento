@@ -4,6 +4,7 @@ import EmptyCard from "../components/EmptyCard";
 import { appProps } from "../common/types";
 import { useState, useEffect } from "react";
 import { Item } from "../common/types";
+import { ERROR } from "../common/utils";
 
 export default function Items({ backendURL, displayError }: appProps) {
   const [items, setItems] = useState<Item[]>([]);
@@ -19,7 +20,7 @@ export default function Items({ backendURL, displayError }: appProps) {
         setItems(jsonObj);
       }
     } catch (err) {
-      displayError("Unable to connect to server. Please try again later.");
+      displayError(ERROR.SERVER_CONNECTION);
     }
   }
 

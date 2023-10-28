@@ -17,7 +17,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 const PRIMARY_COL_HEIGHT = rem(300);
 import { IconPremiumRights, IconEdit, IconTrash } from "@tabler/icons-react";
-import { getStatusBadgeColor } from "../../common/utils";
+import { ERROR, getStatusBadgeColor } from "../../common/utils";
 import { placeholderItem } from "../../common/utils";
 import { Item, appProps } from "../../common/types";
 import { useEffect, useState } from "react";
@@ -39,7 +39,7 @@ export default function ItemPage({ backendURL, displayError }: appProps) {
 
   async function fetchItem() {
     if (!router.query.id) {
-      displayError("Invalid URL: Item ID is missing.");
+      displayError(ERROR.MISSING_ITEM_ID);
       return;
     }
     const id = router.query.id;
@@ -97,7 +97,7 @@ export default function ItemPage({ backendURL, displayError }: appProps) {
         displayError(response.statusText);
       }
     } catch (error) {
-      displayError("Unable to connect to server. Please try again later.");
+      displayError(ERROR.SERVER_CONNECTION);
     }
   }
 

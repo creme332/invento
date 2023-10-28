@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import CategoryTableSort from "../components/TableSort";
 import { Category } from "../common/types";
 import { appProps } from "../common/types";
+import { ERROR } from "../common/utils";
 
 export default function Categories({ backendURL, displayError }: appProps) {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -18,7 +19,7 @@ export default function Categories({ backendURL, displayError }: appProps) {
         setCategories(jsonObj);
       }
     } catch (err) {
-      displayError("Unable to connect to server. Please try again later.");
+      displayError(ERROR.SERVER_CONNECTION);
     }
   }
 
@@ -42,7 +43,7 @@ export default function Categories({ backendURL, displayError }: appProps) {
         displayError(response.statusText);
       }
     } catch (error) {
-      displayError("Unable to connect to server. Please try again later.");
+      displayError(ERROR.SERVER_CONNECTION);
     }
   }
 

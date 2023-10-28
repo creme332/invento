@@ -2,6 +2,7 @@ import { TextInput, Button, Group, Box, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useRouter } from "next/router";
 import { SyntheticEvent } from "react";
+import { ERROR } from "../../common/utils";
 
 interface props {
   backendURL: string;
@@ -64,7 +65,7 @@ export default function CategoryForm({ backendURL, displayError }: props) {
           displayError(response.statusText);
         }
       } catch (error: any) {
-        displayError("Unable to connect to server. Please try again later.");
+        displayError(ERROR.SERVER_CONNECTION);
       }
     }
   }
