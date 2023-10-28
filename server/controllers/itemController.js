@@ -27,6 +27,7 @@ exports.item_by_category = asyncHandler(async (req, res, next) => {
         totalItems: 1,
       },
     },
+    { $sort: { totalItems: -1 } },
   ]);
   res.json(groupItemsByCategory);
 });
@@ -47,6 +48,7 @@ exports.item_by_status = asyncHandler(async (req, res, next) => {
         totalItems: 1,
       },
     },
+    { $sort: { totalItems: -1 } },
   ]);
   res.json(groupItemsByStatus);
 });
