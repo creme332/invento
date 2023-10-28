@@ -9,6 +9,20 @@ exports.item_total = asyncHandler(async (req, res, next) => {
   res.json(itemTotal);
 });
 
+exports.item_recent = asyncHandler(async (req, res, next) => {
+  const limit = parseInt(req.params.count, 10); // number of items to fetch
+
+  const allItems = await Item.aggregate([
+    {
+      $sort: {
+        _id: -1,
+      },
+    },
+    { $limit: limit },
+  ]);
+  res.json(allItems);
+});
+
 exports.item_by_category = asyncHandler(async (req, res, next) => {
   // get number of items for each category
   const groupItemsByCategory = await Item.aggregate([
@@ -125,6 +139,8 @@ exports.item_create_post = [
     if (itemDict.image) {
       itemDict.image = req.body.image;
     }
+
+    // TODO: Check if category is valid
     const item = new Item(itemDict);
 
     // if errors present, send error array
