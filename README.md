@@ -5,14 +5,28 @@ A basic inventory management app built with MERN stack.
 
 ![Screenshot of website](image.png)
 
-[Live Preview ▶]()
+[Live Preview ▶](https://invent0.web.app)
 
 ## Features
--  Table with sorting and search capabilites
+-  [Jamstack](https://jamstack.org/what-is-jamstack/) architecture
+-  Sorting and filtering capabilites for categories
 -  CRUD operations on items and categories
 -  Dashboard with detailed statistics and graphs
 -  Mobile-responsive UI
--  Data validation both on frontend and backend
+-  Form validation on client-side and server-side
+
+Upcoming:
+-  Sorting and filtering capabilites for items
+- Image upload
+- User authentication to delete item/category
+- SEO optimized
+
+## Tools
+- Typescript
+- React
+- Mantine
+- MongoDB
+- Express
 
 ## Installation
 
@@ -41,9 +55,8 @@ MONGO_STRING="mongodb+srv://cooluser:coolpassword@cluster0.lz91hw2.mongodb.net/i
 ```
 > 🔴 **Note**: Do not forget the `invento?` option in your connection string.
 
-To add sample data to your database:
+(Optional) To add sample data to your database:
 
-To populate your database:
 ```bash
 node populatedb
 ```
@@ -66,12 +79,12 @@ cd client
 npm install
 ```
 
-To run the development server:
+To run the development server locally:
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Frontend is deployed at [http://localhost:3000](http://localhost:3000).
 
 ## Diagrams
 ![wireframe of website](/design/wireframe.excalidraw.png)
@@ -80,39 +93,38 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### API endpoints
 
-| Endpoint                         | Meaning                                          |
-| -------------------------------- | ------------------------------------------------ |
-| `GET /items`                     | Get the list of items in the inventory.          |
-| `GET /items/total`               | Get the total number of items in the inventory.  |
-| `GET /items/grouped-by-status`   | Get the number of items for each status.         |
-| `GET /items/grouped-by-category` | Get the number of items for each category.       |
-| `GET /item/{id}`                 | Get the item with ID `id`.                       |
-| `GET /categories`                | Get the list of item categories.                 |
-| `GET /category/{id}`             | Get the category with ID `id`.                   |
-| `POST /item/create`              | POST request for creating item.                  |
-| `POST /category/create`          | POST request for creating category.              |
-| `POST /item/{id}/update`         | POST request for updating item with ID `id`.     |
-| `POST /category/{id}/update`     | POST request for updating category with ID `id`. |
-| `POST /item/{id}/delete`         | POST request for deleting item with ID `id`.     |
-| `POST /category/{id}/delete`     | POST request for deleting category with ID `id`. |
+| Endpoint                         | Meaning                                            |
+| -------------------------------- | -------------------------------------------------- |
+| `GET /items`                     | Get the list of items in the inventory.            |
+| `GET /items/total`               | Get the total number of items in the inventory.    |
+| `GET /items/grouped-by-status`   | Get the number of items for each status.           |
+| `GET /items/grouped-by-category` | Get the number of items for each category.         |
+| `GET /item/{id}`                 | Get the item with ID `id`.                         |
+| `GET /items/recent/{n}`          | Get the last `n` items created.                    |
+| `GET /categories`                | Get the list of item categories.                   |
+| `GET /category/{id}`             | Get the category with ID `id`.                     |
+| `GET /categories/total`          | Get the total number of categories.                |
+| `POST /item/create`              | POST request for creating an item.                 |
+| `POST /category/create`          | POST request for creating a category.              |
+| `POST /item/{id}/update`         | POST request for updating an item with ID `id`.    |
+| `POST /category/{id}/update`     | POST request for updating a category with ID `id`. |
+| `POST /item/{id}/delete`         | POST request for deleting an item with ID `id`.    |
+| `POST /category/{id}/delete`     | POST request for deleting a category with ID `id`. |
 
 ## To-do
-- [ ] When category is deleted, table is not updated. Might be due to sorting.
-- [ ] when a category is created, ensure that it is unique name.
-- [ ] Create items form
-- [ ] Add appropriate click handlers to item page
-- [ ] Complete dedicated item page (use unsplash api for images)
-- [ ] Editing category not possible yet
-- [ ] add endpoint for total categories and total items
-- [ ] Display total items and total categories in items and categories page. `All items(10)`
-- [ ] Add an error message in all pages when server is down
-- [ ] Require user authentication to upload image
+- [ ] Require user authentication to delete item and category
+- [ ] Add loading animation 
+- [ ] make website responsive
+- [ ] Create a common utils functiont to fetch items, categories. Create itemController and categoryController
+- [ ] Add filtering options on item page
 - [ ] Add image upload feature
-- [ ] create dependency chart
+- [ ] Require user authentication to upload image
 - [ ] use typescript in backend
 - [ ] Add page transitions with framer motion
-- [ ] For barchart, display only top 5 categories
-- [ ] Deploy to firebase
+- [ ] Run lighthouse report on each page. Issues on items page:
+- [ ] Create dependency chart
+- [ ] Deploy frontend to firebase
+- [ ] Deploy backend to Render
 
 
 ## References
