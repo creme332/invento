@@ -24,6 +24,13 @@ export default function Categories({ backendURL, displayError }: appProps) {
   }
 
   async function deleteCategory(category: Category) {
+    // ask for admin password
+    const password = prompt("Enter admin password");
+    if (!password || password.length < 3) {
+      displayError("Invalid admin password");
+      return;
+    }
+
     try {
       const response = await fetch(
         `${backendURL}/category/${category._id}/delete`,
@@ -32,6 +39,7 @@ export default function Categories({ backendURL, displayError }: appProps) {
           headers: {
             "Content-Type": "application/json",
           },
+          body: JSON.stringify({ password }),
         }
       );
       console.log(response);

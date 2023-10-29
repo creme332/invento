@@ -10,7 +10,6 @@ exports.category_total = asyncHandler(async (req, res, next) => {
   res.json(total);
 });
 
-
 exports.category_list = asyncHandler(async (req, res, next) => {
   const allCategories = await Category.find({}, { name: 1, description: 1 })
     .sort({ name: 1 })
@@ -86,6 +85,14 @@ exports.category_create_post = [
 
 // Handle Category delete on POST.
 exports.category_delete_post = asyncHandler(async (req, res, next) => {
+  const password = req.body.password;
+
+  // check if password invalid
+  if (password !== process.env.ADMIN_KEY) {
+    res.writeHead(403, `Permission denied`);
+    return res.send();
+  }
+
   // fetch category and items having that category
   const [category, items] = await Promise.all([
     Category.findById(req.params.id).exec(),
@@ -94,7 +101,7 @@ exports.category_delete_post = asyncHandler(async (req, res, next) => {
 
   // check if category exists
   if (!category) {
-    res.writeHead(400, "Category does not exist", {
+    res.writeHead(404, "Category does not exist", {
       "content-type": "application/json",
     });
     return res.send();
