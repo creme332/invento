@@ -6,6 +6,7 @@ import {
   Title,
   NumberInput,
   NativeSelect,
+  Stack,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useRouter } from "next/router";
@@ -182,29 +183,35 @@ export default function ItemForm({ backendURL, displayError }: appProps) {
     <Box maw={340} mx="auto">
       <Title>{editMode ? "Edit item" : "Create new item"}</Title>
       <form onSubmit={submitItem}>
-        <TextInput withAsterisk label="name" {...form.getInputProps("name")} />
-        <TextInput
-          withAsterisk
-          label="description"
-          {...form.getInputProps("description")}
-        />
-        <NumberInput min={0} label="price" {...form.getInputProps("price")} />
-        <NumberInput min={0} label="stock" {...form.getInputProps("stock")} />
-        <NativeSelect
-          label="category"
-          withAsterisk
-          data={getCategoryNames()}
-          {...form.getInputProps("category")}
-        />
-        <NativeSelect
-          withAsterisk
-          label="status"
-          data={validStatus}
-          {...form.getInputProps("status")}
-        />
-        <Group justify="flex-end" mt="md">
-          <Button type="submit">Submit</Button>
-        </Group>
+        <Stack>
+          <TextInput
+            withAsterisk
+            label="Name"
+            {...form.getInputProps("name")}
+          />
+          <TextInput
+            withAsterisk
+            label="Description"
+            {...form.getInputProps("description")}
+          />
+          <NumberInput min={0} label="Price" {...form.getInputProps("price")} />
+          <NumberInput min={0} label="Stock" {...form.getInputProps("stock")} />
+          <NativeSelect
+            label="Category"
+            withAsterisk
+            data={getCategoryNames()}
+            {...form.getInputProps("category")}
+          />
+          <NativeSelect
+            withAsterisk
+            label="Status"
+            data={validStatus}
+            {...form.getInputProps("status")}
+          />
+          <Group justify="flex-end" mt="md">
+            <Button type="submit">Submit</Button>
+          </Group>
+        </Stack>
       </form>
     </Box>
   );

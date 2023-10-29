@@ -1,4 +1,4 @@
-import { TextInput, Button, Group, Box, Title } from "@mantine/core";
+import { TextInput, Button, Group, Box, Title, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useRouter } from "next/router";
 import { SyntheticEvent } from "react";
@@ -74,21 +74,23 @@ export default function CategoryForm({ backendURL, displayError }: props) {
     <Box maw={340} mx="auto">
       <Title>{router.query.title ? router.query.title : ""}</Title>
       <form method="POST" onSubmit={submitCategory}>
-        <TextInput
-          withAsterisk
-          label="Name"
-          placeholder="Science"
-          {...form.getInputProps("name")}
-        />
-        <TextInput
-          withAsterisk
-          label="Description"
-          placeholder="Cool stuffs"
-          {...form.getInputProps("description")}
-        />
-        <Group justify="flex-end" mt="md">
-          <Button type="submit">Submit</Button>
-        </Group>
+        <Stack>
+          <TextInput
+            withAsterisk
+            label="Name"
+            placeholder="Science"
+            {...form.getInputProps("name")}
+          />
+          <TextInput
+            withAsterisk
+            label="Description"
+            placeholder="Cool stuffs"
+            {...form.getInputProps("description")}
+          />
+          <Group justify="flex-end" mt="md">
+            <Button type="submit">Submit</Button>
+          </Group>
+        </Stack>
       </form>
     </Box>
   );
