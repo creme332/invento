@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
 const Item = require("../models/item");
@@ -162,11 +163,19 @@ exports.item_create_post = [
 
 // Handle Item delete on POST.
 exports.item_delete_post = asyncHandler(async (req, res, next) => {
+  const password = req.body.password;
+
+  // check if password invalid
+  if (password !== process.env.ADMIN_KEY) {
+    res.writeHead(403, `Permission denied`);
+    return res.send();
+  }
+
   const item = Item.findById(req.params.id).exec();
 
   // check if item exists
   if (!item) {
-    res.writeHead(403, `Item does not exist`);
+    res.writeHead(404, `Item does not exist`);
     return res.send();
   }
 

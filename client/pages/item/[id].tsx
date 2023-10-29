@@ -21,7 +21,6 @@ import { ERROR, getStatusBadgeColor } from "../../common/utils";
 import { placeholderItem } from "../../common/utils";
 import { Item, appProps } from "../../common/types";
 import { useEffect, useState } from "react";
-import NextImage from "next/image";
 
 export default function ItemPage({ backendURL, displayError }: appProps) {
   const router = useRouter();
@@ -79,12 +78,20 @@ export default function ItemPage({ backendURL, displayError }: appProps) {
   }, []);
 
   async function deleteItem() {
+    // ask for admin password
+    const password = prompt("Enter admin password");
+    if (!password || password.length < 3) {
+      displayError("Invalid admin password");
+      return;
+    }
+
     try {
       const response = await fetch(`${backendURL}/item/${item._id}/delete`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({ password }),
       });
       console.log(response);
 
