@@ -54,7 +54,8 @@ export default function Homepage({ backendURL, displayError }: appProps) {
         itemsByCategory.map((e: any) => e.totalItems),
       ]);
     } catch (error) {
-      displayError(ERROR.SERVER_CONNECTION);    }
+      displayError(ERROR.SERVER_CONNECTION);
+    }
   }
 
   useEffect(() => {
@@ -149,8 +150,8 @@ export default function Homepage({ backendURL, displayError }: appProps) {
           <Text fw={600} size="sm">
             Latest items
           </Text>
-          {recentItems.map((item) => (
-            <Group mt="lg">
+          {recentItems.map((item, i) => (
+            <Group mt="lg" key={`${item.name}-${i}-summary`}>
               <Avatar src={null} alt={item.name} radius="sm">
                 I{" "}
               </Avatar>
