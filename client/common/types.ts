@@ -24,4 +24,5 @@ export interface Item {
 export interface appProps {
   backendURL: string;
   displayError(message: string): void;
+  toggleLoader(switchOn: Boolean): void;
 }

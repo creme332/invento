@@ -5,10 +5,15 @@ import { Category } from "../common/types";
 import { appProps } from "../common/types";
 import { ERROR } from "../common/utils";
 
-export default function Categories({ backendURL, displayError }: appProps) {
+export default function Categories({
+  backendURL,
+  displayError,
+  toggleLoader,
+}: appProps) {
   const [categories, setCategories] = useState<Category[]>([]);
 
   async function fetchCategories() {
+    toggleLoader(true);
     try {
       const res = await fetch(`${backendURL}/categories`);
       if (!res.ok) {
@@ -18,6 +23,7 @@ export default function Categories({ backendURL, displayError }: appProps) {
         console.log(jsonObj);
         setCategories(jsonObj);
       }
+      toggleLoader(false);
     } catch (err) {
       displayError(ERROR.SERVER_CONNECTION);
     }

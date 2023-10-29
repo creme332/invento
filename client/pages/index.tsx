@@ -12,7 +12,11 @@ import { appProps, Item } from "../common/types";
 import { formatRelative } from "date-fns";
 import { ERROR } from "../common/utils";
 
-export default function Homepage({ backendURL, displayError }: appProps) {
+export default function Homepage({
+  backendURL,
+  displayError,
+  toggleLoader,
+}: appProps) {
   const [totalItems, setTotalItems] = useState(0);
   const [totalCategories, setTotalCategories] = useState(0);
   const [recentItems, setRecentItems] = useState<Item[]>([]);
@@ -26,12 +30,12 @@ export default function Homepage({ backendURL, displayError }: appProps) {
       const jsonObj = await res.json();
       return jsonObj;
     } catch (error) {
-      console.log(error);
+      throw error;
     }
-    return null;
   }
 
   async function fetchAllData() {
+    toggleLoader(true);
     try {
       // fetch data as dictionaries
       const fetchedRecentItems = await fetchDataAt("/items/recent/3");
@@ -40,9 +44,9 @@ export default function Homepage({ backendURL, displayError }: appProps) {
       const itemsByCategory = await fetchDataAt("/items/grouped-by-category");
       const itemsByStatus = await fetchDataAt("/items/grouped-by-status");
 
-      setRecentItems(fetchedRecentItems);
-      setTotalItems(itemTotal);
-      setTotalCategories(categoriesTotal);
+      if (fetchedRecentItems) setRecentItems(fetchedRecentItems);
+      if (itemTotal) setTotalItems(itemTotal);
+      if (categoriesTotal) setTotalCategories(categoriesTotal);
 
       setPieData([
         itemsByStatus.map((e: any) => e.status),
@@ -53,6 +57,7 @@ export default function Homepage({ backendURL, displayError }: appProps) {
         itemsByCategory.map((e: any) => e.category),
         itemsByCategory.map((e: any) => e.totalItems),
       ]);
+      toggleLoader(false);
     } catch (error) {
       displayError(ERROR.SERVER_CONNECTION);
     }

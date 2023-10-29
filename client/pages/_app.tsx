@@ -15,9 +15,11 @@ import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 
 export default function App({ Component, pageProps }: any) {
-  const BACKEND_URL = "http://localhost:3001";
+  const env = process.env.NODE_ENV;
+  const BACKEND_URL = env === "development" ? "http://localhost:3001" : "";
   const [modalOpened, modalHandler] = useDisclosure(false);
   const [modalText, setModalText] = useState("hello");
+  const [loading, loadingHandler] = useDisclosure(false);
 
   function displayError(message: string) {
     // if error obtained, display error in modal
@@ -25,6 +27,14 @@ export default function App({ Component, pageProps }: any) {
     modalHandler.open();
   }
 
+  function toggleLoader(switchOn: Boolean) {
+    if (switchOn) {
+      loadingHandler.open();
+    } else {
+      loadingHandler.close();
+    }
+  }
+  
   return (
     <MantineProvider defaultColorScheme="dark" theme={theme}>
       <Head>
@@ -61,13 +71,15 @@ export default function App({ Component, pageProps }: any) {
           // ! Note that position: relative is required for loading overlay to work
         }
         <LoadingOverlay
-          zIndex={1000}
+          visible={loading}
+          zIndex={100}
           overlayProps={{ radius: "sm", blur: 2 }}
         />
         <Component
           {...pageProps}
           displayError={displayError}
           backendURL={BACKEND_URL}
+          toggleLoader={toggleLoader}
         />
       </Container>
       <Footer />

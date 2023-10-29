@@ -6,10 +6,15 @@ import { useState, useEffect } from "react";
 import { Item } from "../common/types";
 import { ERROR } from "../common/utils";
 
-export default function Items({ backendURL, displayError }: appProps) {
+export default function Items({
+  backendURL,
+  displayError,
+  toggleLoader,
+}: appProps) {
   const [items, setItems] = useState<Item[]>([]);
 
   async function fetchItems() {
+    toggleLoader(true);
     try {
       const res = await fetch(`${backendURL}/items`);
       if (!res.ok) {
@@ -19,6 +24,7 @@ export default function Items({ backendURL, displayError }: appProps) {
         console.log(jsonObj);
         setItems(jsonObj);
       }
+      toggleLoader(false);
     } catch (err) {
       displayError(ERROR.SERVER_CONNECTION);
     }
