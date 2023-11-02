@@ -2,8 +2,7 @@ require("dotenv").config();
 const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
 const Item = require("../models/item");
-
-// Display statistics of Items.
+const Category = require("../models/category");
 
 exports.item_total = asyncHandler(async (req, res, next) => {
   const itemTotal = await Item.find().count().exec();
@@ -113,19 +112,23 @@ exports.item_create_post = [
     .trim()
     .isLength({ min: 3 })
     .escape()
-    .withMessage("Name must have at least 3 characters.")
-    .isAlphanumeric()
-    .withMessage("Name has non-alphanumeric characters."),
+    .withMessage("Name must have at least 3 characters."),
   body("description")
     .trim()
     .isLength({ min: 3 })
     .escape()
-    .withMessage("Description must have at least 3 characters.")
-    .isAlphanumeric()
-    .withMessage("Description has non-alphanumeric characters."),
+    .withMessage("Description must have at least 3 characters."),
   asyncHandler(async (req, res, next) => {
     // Extract the validation errors from a request.
     const errors = validationResult(req);
+
+    // Check if category is valid
+    const category = Category.findById(req.body.category).exec();
+
+    if (!category) {
+      res.writeHead(400, `Invalid category`);
+      return res.send();
+    }
 
     // Create Item object with escaped and trimmed data
     const itemDict = {
@@ -133,23 +136,27 @@ exports.item_create_post = [
       description: req.body.description,
       status: req.body.status,
       stock: req.body.stock,
-      image: req.body.image,
       price: req.body.price,
       category: req.body.category,
     };
-    if (itemDict.image) {
+
+    // if image URL included in body, add an image field to itemDict
+    if (req.body.image) {
       itemDict.image = req.body.image;
     }
 
-    // TODO: Check if category is valid
     const item = new Item(itemDict);
 
-    // if errors present, send error array
+    // if errors present, send error array as a string
     if (!errors.isEmpty()) {
-      res.json({
-        errors: errors.array(),
-      });
-      return;
+      res.writeHead(
+        400,
+        `${errors
+          .array()
+          .map((e) => e.msg)
+          .join()}`
+      );
+      return res.send();
     }
     // Data from form is valid.
 
