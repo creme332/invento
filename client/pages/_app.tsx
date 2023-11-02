@@ -16,7 +16,7 @@ import { useState } from "react";
 
 export default function App({ Component, pageProps }: any) {
   const env = process.env.NODE_ENV;
-  const BACKEND_URL = env === "development" ? "http://localhost:3001" : "";
+  const BACKEND_URL = env === "development" ? "http://localhost:3001" : "https://invento-backend.onrender.com/";
   const [modalOpened, modalHandler] = useDisclosure(false);
   const [modalText, setModalText] = useState("hello");
   const [loading, loadingHandler] = useDisclosure(false);
