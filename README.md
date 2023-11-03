@@ -6,6 +6,8 @@ A basic inventory management app built with MERN stack.
 
 [Live Preview ▶](https://invent0.web.app)
 
+> 🟡 **Note**: Backend is running on a free instance on Render and may take some time to spin up.
+
 ## Features
 - Jamstack architecture with RESTful API
 - Sorting and filtering capabilities for categories
