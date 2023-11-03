@@ -2,31 +2,19 @@
 
 A basic inventory management app built with MERN stack.
 
-
-![Screenshot of website](image.png)
+![Screenshot of website](screenshots/homepage.png)
 
 [Live Preview ▶](https://invent0.web.app)
 
 ## Features
--  [Jamstack](https://jamstack.org/what-is-jamstack/) architecture
--  Sorting and filtering capabilites for categories
--  CRUD operations on items and categories
--  Dashboard with detailed statistics and graphs
--  Mobile-responsive UI
--  Form validation on client-side and server-side
-
-Upcoming:
--  Sorting and filtering capabilites for items
-- Image upload
+- Jamstack architecture with RESTful API
+- Sorting and filtering capabilities for categories
+- CRUD operations on items and categories
+- Dashboard with detailed statistics and graphs
+- Form validation on client-side and server-side
 - User authentication to delete item/category
+- Mobile-responsive UI
 - SEO optimized
-
-## Tools
-- Typescript
-- React
-- Mantine
-- MongoDB
-- Express
 
 ## Installation
 
@@ -39,7 +27,9 @@ Navigate to project:
 ```bash
 cd invento
 ```
+
 ### Backend
+
 To install backend dependencies:
 ```bash
 cd server
@@ -52,10 +42,11 @@ In the `server` folder create a `.env` file  with the following contents:
 ```bash
 # Replace with mongo connection string
 MONGO_STRING="mongodb+srv://cooluser:coolpassword@cluster0.lz91hw2.mongodb.net/invento?retryWrites=true&w=majority"
+ADMIN_KEY="1234" # Admin key to delete item/category
 ```
 > 🔴 **Note**: Do not forget the `invento?` option in your connection string.
 
-(Optional) To add sample data to your database:
+Create required database and add sample data:
 
 ```bash
 node populatedb
@@ -89,9 +80,12 @@ Frontend is deployed at [http://localhost:3000](http://localhost:3000).
 ## Diagrams
 ![wireframe of website](/design/wireframe.excalidraw.png)
 
+![Schema](/design/erd.png)
+
 ## Usage
 
 ### API endpoints
+The API is deployed at https://invento-backend.onrender.com/.
 
 | Endpoint                         | Meaning                                            |
 | -------------------------------- | -------------------------------------------------- |
@@ -112,19 +106,9 @@ Frontend is deployed at [http://localhost:3000](http://localhost:3000).
 | `POST /category/{id}/delete`     | POST request for deleting a category with ID `id`. |
 
 ## To-do
-- [ ] Require user authentication to delete item and category
-- [ ] Add loading animation 
-- [ ] make website responsive
-- [ ] Create a common utils functiont to fetch items, categories. Create itemController and categoryController
-- [ ] Add filtering options on item page
+- [ ] Create a utils function to fetch items, categories
+- [ ] Sorting and filtering capabilities for items
 - [ ] Add image upload feature
 - [ ] Require user authentication to upload image
-- [ ] use typescript in backend
-- [ ] Add page transitions with framer motion
-- [ ] Run lighthouse report on each page. Issues on items page:
-- [ ] Create dependency chart
+- [ ] Use typescript in backend
 - [ ] Deploy frontend to firebase
-- [ ] Deploy backend to Render
-
-
-## References
