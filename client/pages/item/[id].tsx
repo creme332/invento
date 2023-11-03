@@ -15,14 +15,15 @@ import {
 } from "@mantine/core";
 import { useRouter } from "next/router";
 import Link from "next/link";
-const PRIMARY_COL_HEIGHT = rem(300);
 import { IconPremiumRights, IconEdit, IconTrash } from "@tabler/icons-react";
 import { ERROR, getStatusBadgeColor } from "../../common/utils";
 import { placeholderItem } from "../../common/utils";
 import { Item, appProps } from "../../common/types";
 import { useEffect, useState } from "react";
+import NextImage from "next/image";
 
 export default function ItemPage({ backendURL, displayError }: appProps) {
+  const PRIMARY_COL_HEIGHT = rem(300);
   const router = useRouter();
   const theme = useMantineTheme();
   const [item, setItem] = useState<Item>(placeholderItem);
@@ -111,14 +112,18 @@ export default function ItemPage({ backendURL, displayError }: appProps) {
   return (
     <Container my="md">
       <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
-        <Image
-          // component={NextImage}
-          src={imageURL}
-          alt="A random image"
-          fallbackSrc="https://placehold.co/600x400?text=Image"
-          height={parseInt(PRIMARY_COL_HEIGHT, 10)}
-          radius={"md"}
-        />
+        <Group pos={"relative"} h={parseInt(PRIMARY_COL_HEIGHT, 10)}>
+          <Image
+            component={NextImage}
+            src={imageURL}
+            alt="A random image"
+            fallbackSrc="https://placehold.co/600x400?text=Image"
+            radius={"md"}
+            fill
+            sizes="440px"
+            priority={true}
+          />
+        </Group>
         <Grid gutter="md">
           <Grid.Col>
             <Container p={0} h={SECONDARY_COL_HEIGHT}>
@@ -166,7 +171,7 @@ export default function ItemPage({ backendURL, displayError }: appProps) {
             >
               <IconPremiumRights color="gold" size={50} />
               <Text fw={700} ta="center" size="xl">
-                Rs {item.price}
+                {item.price}
               </Text>
             </Group>
           </Grid.Col>

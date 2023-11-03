@@ -1,12 +1,5 @@
 // Reference: https://ui.mantine.dev/category/article-cards/#article-card-footer
-import {
-  Card,
-  Image,
-  Group,
-  Text,
-  Badge,
-  useMantineTheme,
-} from "@mantine/core";
+import { Card, Image, Group, Text, Badge } from "@mantine/core";
 import classes from "../styles/ArticleCardFooter.module.css";
 import { Item } from "../common/types";
 import Link from "next/link";
@@ -18,11 +11,9 @@ interface cardProps {
 }
 
 export default function ArticleCardFooter({ item }: cardProps) {
-  const theme = useMantineTheme();
-
   return (
     <Card withBorder padding="lg" radius="md" className={classes.card}>
-      <Card.Section h={100} mb="sm">
+      <Card.Section className={classes.imageSection} mb="sm">
         <Image
           component={NextImage}
           src={`https://source.unsplash.com/random/?${
@@ -30,9 +21,9 @@ export default function ArticleCardFooter({ item }: cardProps) {
           }&${Math.random()}`}
           alt="A random image"
           fallbackSrc="https://placehold.co/600x400"
-          height={100}
-          width={250}
+          fill
           loading="lazy"
+          sizes="250px"
         />
       </Card.Section>
 
