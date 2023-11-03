@@ -20,7 +20,6 @@ import { ERROR, getStatusBadgeColor } from "../../common/utils";
 import { placeholderItem } from "../../common/utils";
 import { Item, appProps } from "../../common/types";
 import { useEffect, useState } from "react";
-import NextImage from "next/image";
 
 export default function ItemPage({ backendURL, displayError }: appProps) {
   const PRIMARY_COL_HEIGHT = rem(300);
@@ -114,14 +113,10 @@ export default function ItemPage({ backendURL, displayError }: appProps) {
       <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
         <Group pos={"relative"} h={parseInt(PRIMARY_COL_HEIGHT, 10)}>
           <Image
-            component={NextImage}
             src={imageURL}
             alt="A random image"
             fallbackSrc="https://placehold.co/600x400?text=Image"
             radius={"md"}
-            fill
-            sizes="440px"
-            priority={true}
           />
         </Group>
         <Grid gutter="md">

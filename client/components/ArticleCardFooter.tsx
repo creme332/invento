@@ -4,7 +4,6 @@ import classes from "../styles/ArticleCardFooter.module.css";
 import { Item } from "../common/types";
 import Link from "next/link";
 import { getStatusBadgeColor } from "../common/utils";
-import NextImage from "next/image";
 
 interface cardProps {
   item: Item;
@@ -15,15 +14,11 @@ export default function ArticleCardFooter({ item }: cardProps) {
     <Card withBorder padding="lg" radius="md" className={classes.card}>
       <Card.Section className={classes.imageSection} mb="sm">
         <Image
-          component={NextImage}
+          h={100}
           src={`https://source.unsplash.com/random/?${
             item.name
           }&${Math.random()}`}
           alt="A random image"
-          fallbackSrc="https://placehold.co/600x400"
-          fill
-          loading="lazy"
-          sizes="250px"
         />
       </Card.Section>
 

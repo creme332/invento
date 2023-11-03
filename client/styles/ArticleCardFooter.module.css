@@ -16,7 +16,7 @@
 }
 
 .imageSection {
-  width: inherit;
+  /* width: inherit; */
   height: 100px;
   position: relative;
 }
