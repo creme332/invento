@@ -6,15 +6,15 @@ A basic inventory management app built with MERN stack.
 
 [Live Preview ▶](https://invent0.web.app)
 
-> 🟡 **Note**: Backend is running on a free instance on Render and may take some time to spin up.
+> 🟡 **Note**: Backend is running on a free instance on Render and may take some time to spin up. If the website is unaccessible for some reason, you can checkout some screenshots of the website [here](screenshots).
 
 ## Features
 - Jamstack architecture with RESTful API
 - Sorting and filtering capabilities for categories
 - CRUD operations on items and categories
-- Dashboard with detailed statistics and graphs
+- Dynamic dashboard with charts
 - Form validation on client-side and server-side
-- User authentication to delete item/category
+- User authentication on server-side when deleting item or category
 - Mobile-responsive UI
 - SEO optimized
 
@@ -87,7 +87,7 @@ Frontend is deployed at [http://localhost:3000](http://localhost:3000).
 ## Usage
 
 ### API endpoints
-The API is deployed at https://invento-backend.onrender.com/.
+The API (production) is deployed at https://invento-backend.onrender.com/.
 
 | Endpoint                         | Meaning                                            |
 | -------------------------------- | -------------------------------------------------- |
