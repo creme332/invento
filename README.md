@@ -1,4 +1,4 @@
-# invento 🤠
+# invento 📦
 
 A basic inventory management app built with MERN stack.
 
@@ -108,9 +108,8 @@ The API (production) is deployed at https://invento-backend.onrender.com/.
 | `POST /category/{id}/delete`     | POST request for deleting a category with ID `id`. |
 
 ## To-do
-- [ ] Create a utils function to fetch items, categories
-- [ ] Sorting and filtering capabilities for items
-- [ ] Add image upload feature
+- [ ] Create a common re-usable function that calls API
+- [ ] Add sorting and filtering capabilities on items page
+- [ ] Add image upload feature using multer.
 - [ ] Require user authentication to upload image
 - [ ] Use typescript in backend
-- [ ] Deploy frontend to firebase
