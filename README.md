@@ -9,7 +9,7 @@ A basic inventory management app built with MERN stack.
 > 🟡 **Note**: Backend is running on a free instance on Render and may take some time to spin up. If the website is unaccessible for some reason, you can checkout some screenshots of the website [here](screenshots).
 
 ## Features
-- Jamstack architecture with RESTful API
+- Jamstack architecture
 - Sorting and filtering capabilities for categories
 - CRUD operations on items and categories
 - Dynamic dashboard with charts
